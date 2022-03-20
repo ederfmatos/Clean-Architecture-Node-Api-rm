@@ -1,0 +1,27 @@
+{
+  "name": "clean-node-api",
+  "version": "1.0.0",
+  "description": "API completa com Typescript utilizando TDD, Clean Architecture, Design Patterns e SOLID.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ederfmatos/clean-architecture-node-api-rm.git"
+  },
+  "keywords": [
+    "clean-architecture",
+    "solid",
+    "tdd",
+    "design patterns",
+    "typescript",
+    "node"
+  ],
+  "author": "Eder Matos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ederfmatos/clean-architecture-node-api-rm/issues"
+  },
+  "homepage": "https://github.com/ederfmatos/clean-architecture-node-api-rm#readme"
+}
