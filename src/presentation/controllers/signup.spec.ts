@@ -1,3 +1,4 @@
+import { InternalServerError } from '../errors/internal-server-error.error'
 import { InvalidParamError } from '../errors/invalid-param-error.error'
 import { MissingParamError } from '../errors/missing-param-error.error'
 import { EmailValidator } from '../protocols/email-validator.protocol'
@@ -124,5 +125,27 @@ describe('SignUp Controller', () => {
 
     expect(emailValidatorSpy).toHaveBeenCalledTimes(1)
     expect(emailValidatorSpy).toHaveBeenCalledWith(httpRequest.body.email)
+  })
+
+  test('should return 500 if EmailValidator throws error', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
+      throw new Error('Any message')
+    })
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })
