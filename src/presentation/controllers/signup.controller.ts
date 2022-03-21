@@ -3,7 +3,7 @@ import { badRequest } from '../helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../protocols/http.protocol'
 
 export class SignUpController {
-  private readonly requiredFields = ['name', 'email', 'password']
+  private readonly requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const missingField = this.requiredFields.find(field => !httpRequest.body[field])
