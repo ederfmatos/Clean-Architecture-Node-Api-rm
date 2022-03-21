@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http.helper'
+import { badRequest, serverError, ok } from '../../helpers/http.helper'
 import { Controller, EmailValidator, HttpRequest, HttpResponse, AddAccount } from './signup.protocol'
 
 export class SignUpController implements Controller {
@@ -27,11 +27,13 @@ export class SignUpController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password
       })
+
+      return ok(account)
     } catch (error) {
       return serverError()
     }
