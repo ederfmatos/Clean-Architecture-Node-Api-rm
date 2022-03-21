@@ -1,7 +1,7 @@
 import { AccountModel } from '../../../domain/models/account.model'
-import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account/add-account.usecase'
+import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.usecase'
 import { InternalServerError, InvalidParamError, MissingParamError } from '../../errors'
-import { EmailValidator } from '../../protocols'
+import { EmailValidator } from './signup.protocol'
 import { SignUpController } from './signup.controller'
 
 function makeEmailValidator (): EmailValidator {
