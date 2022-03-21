@@ -1,3 +1,4 @@
+import { AddAccount } from '../../../domain/usecases/add-account/add-account.usecase'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError } from '../../helpers/http.helper'
 import { Controller, EmailValidator, HttpRequest, HttpResponse } from '../../protocols'
@@ -5,7 +6,10 @@ import { Controller, EmailValidator, HttpRequest, HttpResponse } from '../../pro
 export class SignUpController implements Controller {
   private readonly requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
 
-  constructor (private readonly emailValidator: EmailValidator) {}
+  constructor (
+    private readonly emailValidator: EmailValidator,
+    private readonly addAccount: AddAccount
+  ) {}
 
   async handle ({ body }: HttpRequest): Promise<HttpResponse> {
     try {
@@ -14,7 +18,7 @@ export class SignUpController implements Controller {
         return badRequest(new MissingParamError(missingField))
       }
 
-      const { password, passwordConfirmation, email } = body
+      const { name, password, passwordConfirmation, email } = body
       if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('passwordConfirmation'))
       }
@@ -23,6 +27,12 @@ export class SignUpController implements Controller {
       if (!isValidEmail) {
         return badRequest(new InvalidParamError('email'))
       }
+
+      await this.addAccount.add({
+        name,
+        email,
+        password
+      })
     } catch (error) {
       return serverError()
     }
