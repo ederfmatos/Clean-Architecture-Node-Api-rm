@@ -16,10 +16,14 @@ export const MongoHelper = {
   },
 
   map<Response>(mongoResult: InsertOneResult, model: any): Response {
-    return {
-      id: mongoResult.insertedId.id.toString(),
+    const response = {
+      id: mongoResult.insertedId.toString(),
       ...model
     }
+
+    delete response._id
+
+    return response
   }
 
 }
