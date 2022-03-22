@@ -10,7 +10,7 @@ interface SutType {
 function makeControllerStub (): Controller {
   class ControllerStub implements Controller {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return ok({})
+      return ok({ ok: true })
     }
   }
 
@@ -41,5 +41,21 @@ describe('Log Controller Decorator', () => {
 
     await sut.handle(httpRequest)
     expect(handleSpy).toHaveBeenNthCalledWith(1, httpRequest)
+  })
+
+  test('should return the same result of the controller', async () => {
+    const { sut } = makeSut()
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any_email@mail.com',
+        name: 'any_name',
+        password: 'any_password',
+        passwordConfirmation: 'any_password_confirmation'
+      }
+    }
+
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({ ok: true })
   })
 })
