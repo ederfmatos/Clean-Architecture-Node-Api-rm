@@ -3,7 +3,7 @@ import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-accoun
 import { InternalServerError, MissingParamError } from '../../errors'
 import { HttpRequest, Validation } from './signup.protocol'
 import { SignUpController } from './signup.controller'
-import { badRequest, ok, serverError } from '../../helpers/http.helper'
+import { badRequest, ok, serverError } from '../../helpers/http/http.helper'
 
 function makeFakeRequest (): HttpRequest {
   return {
