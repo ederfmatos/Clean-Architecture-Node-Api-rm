@@ -3,8 +3,6 @@ import { badRequest, serverError, ok } from '../../helpers/http.helper'
 import { Controller, EmailValidator, HttpRequest, HttpResponse, AddAccount, Validation } from './signup.protocol'
 
 export class SignUpController implements Controller {
-  private readonly requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-
   constructor (
     private readonly emailValidator: EmailValidator,
     private readonly addAccount: AddAccount,
@@ -18,10 +16,7 @@ export class SignUpController implements Controller {
         return badRequest(validationError)
       }
 
-      const { name, password, passwordConfirmation, email } = body
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamError('passwordConfirmation'))
-      }
+      const { name, password, email } = body
 
       const isValidEmail = this.emailValidator.isValid(email)
       if (!isValidEmail) {
