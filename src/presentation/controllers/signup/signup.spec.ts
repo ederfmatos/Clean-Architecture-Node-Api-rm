@@ -47,8 +47,8 @@ function makeAddAccount (): AddAccount {
 
 function makeValidationStub (): Validation {
   class ValidationStub implements Validation {
-    async validate (input: any): Promise<Error | undefined> {
-      return Promise.resolve(null)
+    validate (input: any): Error {
+      return null
     }
   }
 
@@ -179,7 +179,7 @@ describe('SignUp Controller', () => {
     const { sut, validationStub } = makeSut()
     const error = new MissingParamError('any_field')
     jest.spyOn(validationStub, 'validate')
-      .mockReturnValueOnce(Promise.resolve(error))
+      .mockReturnValueOnce(error)
 
     const httpRequest = makeFakeRequest()
 
