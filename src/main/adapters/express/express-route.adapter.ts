@@ -8,7 +8,11 @@ export function handleExpressRoute (controller: Controller) {
     }
 
     const { body, statusCode }: HttpResponse = await controller.handle(httpRequest)
+    if (statusCode >= 200 && statusCode <= 299) {
+      return response.status(statusCode).json(body)
+    }
 
-    return response.status(statusCode).json(body)
+    return response.status(statusCode)
+      .json({ error: body.message })
   }
 }
