@@ -13,7 +13,10 @@ export class SignUpController implements Controller {
 
   async handle ({ body }: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.validation.validate(body)
+      const validationError = await this.validation.validate(body)
+      if (validationError) {
+        return badRequest(validationError)
+      }
       const missingField = this.requiredFields.find(field => !body[field])
       if (missingField) {
         return badRequest(new MissingParamError(missingField))
