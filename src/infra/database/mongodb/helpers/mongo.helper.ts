@@ -1,5 +1,7 @@
 import { Collection, InsertOneResult, MongoClient } from 'mongodb'
 
+type CollectionName = 'accounts' | 'errors'
+
 export const MongoHelper = {
   client: null as MongoClient,
   url: null as string,
@@ -14,7 +16,7 @@ export const MongoHelper = {
     this.client = null
   },
 
-  async getCollection (name: string): Promise<Collection> {
+  async getCollection (name: CollectionName): Promise<Collection> {
     if (this.client === null) {
       await this.connect(this.url)
     }
