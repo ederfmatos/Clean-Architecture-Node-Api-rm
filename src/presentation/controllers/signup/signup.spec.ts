@@ -15,6 +15,15 @@ function makeFakeRequest (): HttpRequest {
   }
 }
 
+function makeFakeAccount (): AccountModel {
+  return {
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email@mail.com',
+    password: 'valid_password'
+  }
+}
+
 function makeEmailValidator (): EmailValidator {
   class EmailValidatorStub implements EmailValidator {
     isValid (email: string): boolean {
@@ -28,15 +37,7 @@ function makeEmailValidator (): EmailValidator {
 function makeAddAccount (): AddAccount {
   class AddAccountStub implements AddAccount {
     async add (account: AddAccountModel): Promise<AccountModel> {
-      const fakeAccount = {
-        ...account,
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@mail.com',
-        password: 'valid_password'
-      }
-
-      return fakeAccount
+      return makeFakeAccount()
     }
   }
 
@@ -217,11 +218,6 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual({
-      id: 'valid_id',
-      name: 'valid_name',
-      email: 'valid_email@mail.com',
-      password: 'valid_password'
-    })
+    expect(httpResponse.body).toEqual(makeFakeAccount())
   })
 })
