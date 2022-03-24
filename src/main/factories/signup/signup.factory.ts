@@ -1,6 +1,6 @@
-import { AddAccountRepository } from '../../../data/protocols/database/add-account-repository.protocol'
+import { AddAccountRepository } from '../../../data/protocols/database/account/add-account-repository.protocol'
 import { Hasher } from '../../../data/protocols/criptography/hasher.protocol'
-import { LogErrorRepository } from '../../../data/protocols/database/log-error-repository.protocol'
+import { LogErrorRepository } from '../../../data/protocols/database/log/log-error-repository.protocol'
 import { DbAddAccount } from '../../../data/usecases/add-account/db-add-account.usecase'
 import { AddAccount } from '../../../domain/usecases/add-account.usecase'
 import { BcryptAdapter } from '../../../infra/criptography/bcrypt/bcrypt.adapter'
