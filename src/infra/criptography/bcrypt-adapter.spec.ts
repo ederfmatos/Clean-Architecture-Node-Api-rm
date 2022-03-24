@@ -67,4 +67,12 @@ describe('Bcrypt Adapter', () => {
     const result = await sut.compare('any_value', 'any_hash')
     expect(result).toBe(true)
   })
+
+  test('should return false when compare fails', async () => {
+    const { sut } = makeSut()
+    jest.spyOn(bcrypt, 'compare').mockImplementationOnce(async () => false)
+
+    const result = await sut.compare('any_value', 'any_hash')
+    expect(result).toBe(false)
+  })
 })
