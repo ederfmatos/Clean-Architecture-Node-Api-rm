@@ -14,7 +14,7 @@
     "test:verbose": "jest --passWithNoTests",
     "test:ci": "npm test -- --coverage",
     "test:integration": "npm test -- --watch -c jest-integration.config.js",
-    "prepare": "husky install"
+    "prepare:husky": "husky install"
   },
   "repository": {
     "type": "git",
@@ -68,6 +68,6 @@
     "validator": "^13.7.0"
   },
   "engines": {
-    "node": "16.13.0"
+    "node": "16.*"
   }
 }
