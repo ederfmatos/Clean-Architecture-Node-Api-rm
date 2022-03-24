@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "target": "ES2022",
     "esModuleInterop": true,
-    "allowJs": true
-  }
+  },
+  "include": ["src"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

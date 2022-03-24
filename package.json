@@ -4,7 +4,10 @@
   "description": "API completa com Typescript utilizando TDD, Clean Architecture, Design Patterns e SOLID.",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "start": "node dist/main/server.js",
+    "dev": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit.config.js",
     "test:staged": "npm test -- --findRelatedTests",
@@ -51,6 +54,7 @@
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "lint-staged": "^12.3.7",
+    "rimraf": "^3.0.2",
     "sucrase": "^3.20.3",
     "supertest": "^6.2.2",
     "ts-jest": "^27.1.3",
@@ -59,7 +63,6 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.3",
-    "fast-glob": "^3.2.11",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
     "validator": "^13.7.0"
