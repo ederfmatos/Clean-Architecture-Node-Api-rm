@@ -11,9 +11,10 @@ import { Validation } from '../../../presentation/protocols/validation'
 import { Controller } from '../../../presentation/protocols'
 import { LogControllerDecorator } from '../../decorators/log/log.decorator'
 import { makeSignUpValidation } from './signup.validation'
+import env from '../../config/env'
 
 export function makeSignUpController (): Controller {
-  const hasher: Hasher = new BcryptAdapter(12)
+  const hasher: Hasher = new BcryptAdapter(env.bcryptSalt)
   const addAccountRepository: AddAccountRepository = new AccountMongoRepository()
   const addAccount: AddAccount = new DbAddAccount(hasher, addAccountRepository)
   const validation: Validation = makeSignUpValidation()
