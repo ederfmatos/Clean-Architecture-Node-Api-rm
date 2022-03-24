@@ -1,4 +1,4 @@
-import { Collection, InsertOneResult, MongoClient } from 'mongodb'
+import { Collection, InsertOneResult, MongoClient, WithId } from 'mongodb'
 
 type CollectionName = 'accounts' | 'errors'
 
@@ -28,6 +28,21 @@ export const MongoHelper = {
     const response = {
       id: mongoResult.insertedId.toString(),
       ...model
+    }
+
+    delete response._id
+
+    return response
+  },
+
+  mapResult<Response>(mongoResult: WithId<any>): Response {
+    if (!mongoResult) {
+      return null
+    }
+
+    const response = {
+      id: mongoResult._id,
+      ...mongoResult
     }
 
     delete response._id
