@@ -8,8 +8,7 @@ export class DbAuthentication implements Authentication {
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
     private readonly tokenGenerator: TokenGenerator
-  ) {
-  }
+  ) {}
 
   async authenticate (authModel: AuthenticationModel): Promise<string> {
     const account = await this.loadAccountByEmailRepository.load(authModel.email)
@@ -22,8 +21,6 @@ export class DbAuthentication implements Authentication {
       return null
     }
 
-    await this.tokenGenerator.generate(account.id)
-
-    return ''
+    return this.tokenGenerator.generate(account.id)
   }
 }
