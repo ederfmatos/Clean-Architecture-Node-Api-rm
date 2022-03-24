@@ -17,4 +17,14 @@ describe('Jwt Adapter', () => {
     await sut.encrypt('any_id')
     expect(signSpy).toHaveBeenNthCalledWith(1, { id: 'any_id' }, 'secret')
   })
+
+  test('should call sign with correct values', async () => {
+    const sut = makeSut()
+    jest.spyOn(JsonWebToken, 'sign').mockImplementation(() => {
+      throw new Error('any-message')
+    })
+
+    const response = sut.encrypt('any_id')
+    await expect(response).rejects.toThrowError(new Error('any-message'))
+  })
 })
