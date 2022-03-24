@@ -1,5 +1,5 @@
 import { AddAccountRepository } from '../../../data/protocols/database/add-account-repository.protocol'
-import { Encrypter } from '../../../data/protocols/criptography/encrypter.protocol'
+import { Hasher } from '../../../data/protocols/criptography/hasher.protocol'
 import { LogErrorRepository } from '../../../data/protocols/database/log-error-repository.protocol'
 import { DbAddAccount } from '../../../data/usecases/add-account/db-add-account.usecase'
 import { AddAccount } from '../../../domain/usecases/add-account.usecase'
@@ -13,9 +13,9 @@ import { LogControllerDecorator } from '../../decorators/log/log.decorator'
 import { makeSignUpValidation } from './signup.validation'
 
 export function makeSignUpController (): Controller {
-  const encrypter: Encrypter = new BcryptAdapter(12)
+  const hasher: Hasher = new BcryptAdapter(12)
   const addAccountRepository: AddAccountRepository = new AccountMongoRepository()
-  const addAccount: AddAccount = new DbAddAccount(encrypter, addAccountRepository)
+  const addAccount: AddAccount = new DbAddAccount(hasher, addAccountRepository)
   const validation: Validation = makeSignUpValidation()
   const signUpController: SignUpController = new SignUpController(addAccount, validation)
   const logErrorRepository: LogErrorRepository = new LogMongoRepository()
