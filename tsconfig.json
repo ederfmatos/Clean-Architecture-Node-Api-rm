@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "module": "CommonJS",
+    "outDir": "dist",
+    "module": "commonjs",
     "target": "ES2022",
     "esModuleInterop": true,
+    "sourceMap": true
   },
   "include": ["src"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]

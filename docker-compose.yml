@@ -12,14 +12,19 @@ services:
 
   api:
     container_name: clean-node-api
-    build: .
-    image: clean-node-api
+    image: node:16
+    working_dir: /usr/src/clean-node-api
     restart: always
+    command: bash -c "npm install --production && npm run debug"
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-node-api
     volumes:
-      - ./dist:/usr/app/clean-node-api/dist
+      - ./dist/:/usr/src/clean-node-api/dist/
+      - ./package.json:/usr/src/clean-node-api/package.json
     depends_on:
       - mongo
     ports:
-      - 5050:5050
+      - "5050:5050"
+      - "9222:9222"
+    links:
+      - mongo
