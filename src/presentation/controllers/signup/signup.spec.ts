@@ -1,7 +1,13 @@
-import { AccountModel } from '../../../domain/models/account.model'
-import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.usecase'
 import { InternalServerError, MissingParamError } from '../../errors'
-import { HttpRequest, Validation } from './signup.protocol'
+import {
+  HttpRequest,
+  Validation,
+  AccountModel,
+  Authentication,
+  AddAccount,
+  AddAccountModel,
+  AuthenticationModel
+} from './signup.protocol'
 import { SignUpController } from './signup.controller'
 import { badRequest, ok, serverError } from '../../helpers/http/http.helper'
 
@@ -45,21 +51,34 @@ function makeValidationStub (): Validation {
   return new ValidationStub()
 }
 
+function makeAuthentication (): Authentication {
+  class AuthenticationStub implements Authentication {
+    async authenticate (authModel: AuthenticationModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+
+  return new AuthenticationStub()
+}
+
 interface SutType {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication
 }
 
 function makeSut (): SutType {
   const addAccountStub = makeAddAccount()
   const validationStub = makeValidationStub()
-  const sut = new SignUpController(addAccountStub, validationStub)
+  const authenticationStub = makeAuthentication()
+  const sut = new SignUpController(addAccountStub, validationStub, authenticationStub)
 
   return {
     sut,
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
@@ -122,5 +141,19 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(badRequest(error))
+  })
+
+  test('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authenticationSpy = jest.spyOn(authenticationStub, 'authenticate')
+
+    const httpRequest = makeFakeRequest()
+
+    await sut.handle(httpRequest)
+
+    expect(authenticationSpy).toHaveBeenNthCalledWith(1, {
+      email: httpRequest.body.email,
+      password: httpRequest.body.password
+    })
   })
 })
