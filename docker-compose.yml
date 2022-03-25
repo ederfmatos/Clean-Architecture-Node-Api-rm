@@ -15,7 +15,7 @@ services:
     image: node:16
     working_dir: /usr/src/clean-node-api
     restart: always
-    command: bash -c "npm install --production && npm run debug"
+    command: bash -c "npm install --production && npm install nodemon && npm run debug"
     environment:
       - MONGO_URL=mongodb://mongo:27017/clean-node-api
     volumes:
