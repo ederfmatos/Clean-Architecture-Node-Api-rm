@@ -1,6 +1,6 @@
 {
   "name": "clean-node-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "API completa com Typescript utilizando TDD, Clean Architecture, Design Patterns e SOLID.",
   "main": "index.js",
   "scripts": {
