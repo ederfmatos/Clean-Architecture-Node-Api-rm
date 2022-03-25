@@ -1,5 +1,5 @@
 import { InternalServerError, MissingParamError } from '../../../errors'
-import { badRequest, serverError } from '../../../helpers/http/http.helper'
+import { badRequest, serverError, noContent } from '../../../helpers/http/http.helper'
 import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey.protocol'
 import { AddSurveyController } from './add-survey.controller'
 
@@ -101,5 +101,15 @@ describe('AddSurvey Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError(new InternalServerError()))
+  })
+
+  test('should return 204 on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(noContent())
   })
 })
