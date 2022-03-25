@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mongo: 
+    container_name: clean-node-mongo
+    image: mongo:5.0
+    restart: always
+    volumes:
+      - /opt/clean-node/mongo:/data/db
+    ports:
+      - 27017:27017
+
+  api:
+    container_name: clean-node-api
+    build: .
+    image: clean-node-api
+    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/clean-node-api
+    volumes:
+      - ./dist:/usr/app/clean-node-api/dist
+    depends_on:
+      - mongo
+    ports:
+      - 5050:5050
