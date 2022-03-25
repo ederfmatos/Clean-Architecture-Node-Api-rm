@@ -1,5 +1,5 @@
-import { MissingParamError } from '../../../errors'
-import { badRequest } from '../../../helpers/http/http.helper'
+import { InternalServerError, MissingParamError } from '../../../errors'
+import { badRequest, serverError } from '../../../helpers/http/http.helper'
 import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey.protocol'
 import { AddSurveyController } from './add-survey.controller'
 
@@ -88,5 +88,18 @@ describe('AddSurvey Controller', () => {
     await sut.handle(httpRequest)
 
     expect(addSurveySpy).toHaveBeenNthCalledWith(1, httpRequest.body)
+  })
+
+  test('should return 500 if AddSurvey throws', async () => {
+    const { sut, addSurveyStub } = makeSut()
+
+    jest.spyOn(addSurveyStub, 'add')
+      .mockRejectedValueOnce(new Error('any message'))
+
+    const httpRequest = makeFakeRequest()
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(serverError(new InternalServerError()))
   })
 })
