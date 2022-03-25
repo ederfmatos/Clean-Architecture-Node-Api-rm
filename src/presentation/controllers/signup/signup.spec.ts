@@ -116,7 +116,7 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(ok(makeFakeAccount()))
+    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
   })
 
   test('should call Validation with correct values', async () => {
@@ -152,8 +152,8 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
 
     expect(authenticationSpy).toHaveBeenNthCalledWith(1, {
-      email: 'valid_email@mail.com',
-      password: 'valid_password'
+      email: httpRequest.body.email,
+      password: httpRequest.body.password
     })
   })
 
