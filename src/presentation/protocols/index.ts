@@ -1,3 +1,5 @@
 export * from './controller.protocol'
 export * from './http.protocol'
 export * from './validation'
+export * from '../../domain/usecases/add-survey.usecase'
+export * from '../../domain/models/survey.model'
