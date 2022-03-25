@@ -12,13 +12,15 @@ import { Controller } from '../../../presentation/protocols'
 import { LogControllerDecorator } from '../../decorators/log/log.decorator'
 import { makeSignUpValidation } from './signup.validation'
 import env from '../../config/env'
+import { makeAuthentication } from '../authentication/authetication.factory'
 
 export function makeSignUpController (): Controller {
   const hasher: Hasher = new BcryptAdapter(env.bcryptSalt)
   const addAccountRepository: AddAccountRepository = new AccountMongoRepository()
   const addAccount: AddAccount = new DbAddAccount(hasher, addAccountRepository)
   const validation: Validation = makeSignUpValidation()
-  const signUpController: SignUpController = new SignUpController(addAccount, validation)
+  const authentication = makeAuthentication()
+  const signUpController: SignUpController = new SignUpController(addAccount, validation, authentication)
   const logErrorRepository: LogErrorRepository = new LogMongoRepository()
   return new LogControllerDecorator(signUpController, logErrorRepository)
 }
