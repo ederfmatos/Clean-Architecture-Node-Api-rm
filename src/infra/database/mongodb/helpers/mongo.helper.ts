@@ -1,6 +1,6 @@
 import { Collection, InsertOneResult, MongoClient, WithId } from 'mongodb'
 
-type CollectionName = 'accounts' | 'errors'
+type CollectionName = 'accounts' | 'errors' | 'surveys'
 
 export const MongoHelper = {
   client: null as MongoClient,
