@@ -1,15 +1,19 @@
 import { Decrypter } from '../../protocols/criptography'
+import { AccountModel } from '../add-account/db-add-account.protocol'
 import { DbLoadAccountByToken } from './db-load-account-by-token.usecase'
+import { LoadAccountByTokenRepository } from '../../protocols/database/account/load-account-by-token-repository'
 
 interface SutType {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
+  loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
 }
 
 function makeSut (): SutType {
   const decrypterStub = makeDecrypter()
-  const sut = new DbLoadAccountByToken(decrypterStub)
-  return { sut, decrypterStub }
+  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepositoryStub()
+  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
+  return { sut, decrypterStub, loadAccountByTokenRepositoryStub }
 }
 
 function makeDecrypter (): Decrypter {
@@ -19,6 +23,24 @@ function makeDecrypter (): Decrypter {
     }
   }
   return new DecrypterStub()
+}
+
+function makeFakeAccount (): AccountModel {
+  return {
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email@mail.com',
+    password: 'valid_password'
+  }
+}
+
+function makeLoadAccountByTokenRepositoryStub (): LoadAccountByTokenRepository {
+  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+    async loadByToken (token: string, role?: string): Promise<AccountModel> {
+      return makeFakeAccount()
+    }
+  }
+  return new LoadAccountByTokenRepositoryStub()
 }
 
 describe('DbLoadAccountByToken Usecase', () => {
@@ -34,5 +56,12 @@ describe('DbLoadAccountByToken Usecase', () => {
     jest.spyOn(decrypterStub, 'decrypt').mockReturnValue(null)
     const response = await sut.loadAccountByToken('any-token', 'any_role')
     expect(response).toBeNull()
+  })
+
+  test('should call LoadAccountByTokenRepository with correct values', async () => {
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    const loadSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
+    await sut.loadAccountByToken('any-token', 'any_role')
+    expect(loadSpy).toHaveBeenNthCalledWith(1, 'any-token', 'any_role')
   })
 })
