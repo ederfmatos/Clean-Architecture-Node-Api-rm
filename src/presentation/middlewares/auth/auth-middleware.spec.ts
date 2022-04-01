@@ -1,8 +1,7 @@
 import { forbidden } from '../../helpers/http/http.helper'
 import { AccessDeniedError } from '../../errors'
 import { AuthMiddleware } from './auth.middleware'
-import { AccountModel } from '../../../domain/models/account.model'
-import { LoadAccountByToken } from '../../../domain/usecases/load-account-by-token.usecase'
+import { AccountModel, LoadAccountByToken } from './auth-middleware.protocol'
 
 interface SutType {
   sut: AuthMiddleware
