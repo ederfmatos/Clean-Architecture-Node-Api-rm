@@ -140,5 +140,36 @@ describe('Account Mongo Repository', () => {
 
       expect(account).toBeFalsy()
     })
+
+    test('should return null on load by token with role fails', async () => {
+      const sut = makeSut()
+
+      await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      })
+
+      const account = await sut.loadByToken('any_token', 'any_role')
+
+      expect(account).toBeFalsy()
+    })
+
+    test('should return null on load by token with role fails', async () => {
+      const sut = makeSut()
+
+      await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token',
+        role: 'any_role'
+      })
+
+      const account = await sut.loadByToken('any_token')
+
+      expect(account).toBeFalsy()
+    })
   })
 })
