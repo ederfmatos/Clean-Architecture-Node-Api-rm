@@ -8,8 +8,7 @@ export class JwtAdapter implements Encrypter, Decrypter {
     return JsonWebToken.sign({ id }, this.secret)
   }
 
-  async decrypt (value: string): Promise<string> {
-    JsonWebToken.verify(value, this.secret)
-    return ''
+  async decrypt (token: string): Promise<string> {
+    return JsonWebToken.verify(token, this.secret) as string
   }
 }
