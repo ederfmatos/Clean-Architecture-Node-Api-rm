@@ -35,7 +35,8 @@ describe('Survey Mongo Repository', () => {
         {
           answer: 'another_answer'
         }
-      ]
+      ],
+      date: new Date()
     })
 
     const count = await surveyCollection.countDocuments()

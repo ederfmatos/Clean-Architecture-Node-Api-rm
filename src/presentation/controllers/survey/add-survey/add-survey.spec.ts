@@ -2,6 +2,7 @@ import { InternalServerError, MissingParamError } from '../../../errors'
 import { badRequest, serverError, noContent } from '../../../helpers/http/http.helper'
 import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey.protocol'
 import { AddSurveyController } from './add-survey.controller'
+import MockDate from 'mockdate'
 
 interface SutType {
   sut: AddSurveyController
@@ -30,7 +31,8 @@ function makeFakeRequest (): HttpRequest {
           image: 'any_image',
           answer: 'any_answer'
         }
-      ]
+      ],
+      date: new Date()
     }
   }
 }
@@ -55,6 +57,14 @@ function makeAddSurvey (): AddSurvey {
 }
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validationStubSpy = jest.spyOn(validationStub, 'validate')
