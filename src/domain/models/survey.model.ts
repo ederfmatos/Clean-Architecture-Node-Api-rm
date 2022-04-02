@@ -3,7 +3,8 @@ export interface SurveyAnswer {
   answer: string
 }
 
-export interface AddSurveyModel {
+export interface SurveyModel {
+  id: string
   question: string
   answers: SurveyAnswer[]
   date: Date
