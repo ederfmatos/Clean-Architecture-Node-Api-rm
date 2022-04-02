@@ -1,6 +1,6 @@
 import { LoadSurveysController } from './load-surveys.controller'
 import { SurveyModel, LoadSurveys } from './load-surveys.protocol'
-import { serverError } from '../../../helpers/http/http.helper'
+import { ok, serverError } from '../../../helpers/http/http.helper'
 import MockDate from 'mockdate'
 import { InternalServerError } from '../../../errors'
 
@@ -64,5 +64,11 @@ describe('LoadSurveys  Controller', () => {
     jest.spyOn(loadSurveysStub, 'load').mockRejectedValue(new Error('any message'))
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(serverError(new InternalServerError()))
+  })
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeSurveys()))
   })
 })
