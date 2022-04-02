@@ -18,7 +18,8 @@
     "test:ci": "npm test -- --coverage",
     "test:integration": "npm test -- --watch -c jest-integration.config.js",
     "prepare:husky": "husky install",
-    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info"
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
+    "lint": "eslint 'src/**' --fix"
   },
   "repository": {
     "type": "git",
