@@ -47,4 +47,11 @@ describe('DBLoadSurveys', () => {
     await sut.load()
     expect(loadSpy).toHaveBeenCalledTimes(1)
   })
+
+  test('should throw if LoadSurveysRepository throws', async () => {
+    const { sut, loadSurveysRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveysRepositoryStub, 'findAll').mockRejectedValue(new Error('any message'))
+    const response = sut.load()
+    await expect(response).rejects.toThrowError(new Error('any message'))
+  })
 })
