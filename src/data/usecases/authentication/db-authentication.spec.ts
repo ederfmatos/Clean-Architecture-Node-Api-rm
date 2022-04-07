@@ -24,7 +24,7 @@ function makeLoadAccountByEmailRepository (): LoadAccountByEmailRepository {
   return new LoadAccountByEmailRepositoryStub()
 }
 
-interface SutType {
+type SutType = {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashComparerStub: HashComparer

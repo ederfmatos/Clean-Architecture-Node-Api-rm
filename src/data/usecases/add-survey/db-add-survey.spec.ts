@@ -2,7 +2,7 @@ import { AddSurveyRepository, AddSurveyModel } from './db-add-survey.protocol'
 import { DbAddSurvey } from './db-add-survey.usecase'
 import MockDate from 'mockdate'
 
-interface SutType {
+type SutType = {
   sut: DbAddSurvey
   addSurveyRepositoryStub: AddSurveyRepository
 }

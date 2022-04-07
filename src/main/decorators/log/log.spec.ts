@@ -32,7 +32,7 @@ function makeControllerStub (): Controller {
   return new ControllerStub()
 }
 
-interface SutType {
+type SutType = {
   sut: LogControllerDecorator
   controllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository

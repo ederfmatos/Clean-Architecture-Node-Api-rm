@@ -3,7 +3,7 @@ import { AccountModel, HttpRequest, LoadAccountByToken } from './auth-middleware
 import { AccessDeniedError, InternalServerError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers/http/http.helper'
 
-interface SutType {
+type SutType = {
   sut: AuthMiddleware
   loadAccountByTokenStub: LoadAccountByToken
 }

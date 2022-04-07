@@ -61,7 +61,7 @@ function makeAuthentication (): Authentication {
   return new AuthenticationStub()
 }
 
-interface SutType {
+type SutType = {
   sut: SignUpController
   addAccountStub: AddAccount
   validationStub: Validation

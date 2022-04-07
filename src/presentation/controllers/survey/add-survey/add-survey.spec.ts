@@ -4,7 +4,7 @@ import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey
 import { AddSurveyController } from './add-survey.controller'
 import MockDate from 'mockdate'
 
-interface SutType {
+type SutType = {
   sut: AddSurveyController
   validationStub: Validation
   addSurveyStub: AddSurvey

@@ -3,7 +3,7 @@ import { LoadSurveysRepository } from '@/data/protocols/database/survey/load-sur
 import { DbLoadSurveys } from './db-load-surveys.usecase'
 import MockDate from 'mockdate'
 
-interface SutType {
+type SutType = {
   sut: DbLoadSurveys
   loadSurveysRepositoryStub: LoadSurveysRepository
 }

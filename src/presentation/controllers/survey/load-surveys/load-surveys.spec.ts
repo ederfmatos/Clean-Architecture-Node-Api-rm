@@ -4,7 +4,7 @@ import { noContent, ok, serverError } from '@/presentation/helpers/http/http.hel
 import { InternalServerError } from '@/presentation/errors'
 import MockDate from 'mockdate'
 
-interface SutType {
+type SutType = {
   sut: LoadSurveysController
   loadSurveysStub: LoadSurveys
 }

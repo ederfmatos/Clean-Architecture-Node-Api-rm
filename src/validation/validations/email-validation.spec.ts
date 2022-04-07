@@ -12,7 +12,7 @@ function makeEmailValidator (): EmailValidator {
   return new EmailValidatorStub()
 }
 
-interface SutType {
+type SutType = {
   sut: EmailValidation
   emailValidatorStub: EmailValidator
 }
