@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc",
+    "build": "tsc -p tsconfig-build.json",
     "build:watch": "tsc -w",
     "start": "node dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy dist/main/server.js",
@@ -71,10 +71,14 @@
     "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongodb": "^4.4.1",
     "validator": "^13.7.0"
   },
   "engines": {
     "node": "16.*"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

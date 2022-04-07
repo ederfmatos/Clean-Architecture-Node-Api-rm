@@ -1,6 +1,6 @@
 import { Express, Router } from 'express'
-import authRoute from '../routes/auth.route'
-import surveyRoute from '../routes/survey.route'
+import authRoute from '@/main/routes/auth.route'
+import surveyRoute from '@/main/routes/survey.route'
 
 type Route = (router: Router) => void
 

@@ -1,5 +1,5 @@
-import { InternalServerError, MissingParamError } from '../../../errors'
-import { badRequest, serverError, noContent } from '../../../helpers/http/http.helper'
+import { InternalServerError, MissingParamError } from '@/presentation/errors'
+import { badRequest, serverError, noContent } from '@/presentation/helpers/http/http.helper'
 import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey.protocol'
 import { AddSurveyController } from './add-survey.controller'
 import MockDate from 'mockdate'

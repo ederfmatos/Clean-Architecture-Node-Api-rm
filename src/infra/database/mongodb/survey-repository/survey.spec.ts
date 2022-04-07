@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb'
-import { SurveyModel } from '../../../../domain/models/survey.model'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { SurveyModel } from '@/domain/models/survey.model'
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
 import { SurveyMongoRepository } from './survey.repository'
 
 function makeSut (): SurveyMongoRepository {

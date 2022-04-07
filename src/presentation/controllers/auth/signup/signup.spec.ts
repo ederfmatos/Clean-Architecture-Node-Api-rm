@@ -1,4 +1,3 @@
-import { InternalServerError, MissingParamError, EmailInUseError } from '../../../errors'
 import {
   HttpRequest,
   Validation,
@@ -9,7 +8,8 @@ import {
   AuthenticationModel
 } from './signup.protocol'
 import { SignUpController } from './signup.controller'
-import { badRequest, forbidden, ok, serverError } from '../../../helpers/http/http.helper'
+import { InternalServerError, MissingParamError, EmailInUseError } from '@/presentation/errors'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http.helper'
 
 function makeFakeRequest (): HttpRequest {
   return {

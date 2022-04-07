@@ -1,6 +1,6 @@
-import { LogErrorRepository } from '../../../data/protocols/database/log/log-error-repository.protocol'
-import { ok, serverError } from '../../../presentation/helpers/http/http.helper'
-import { Controller, HttpRequest, HttpResponse } from '../../../presentation/protocols'
+import { LogErrorRepository } from '@/data/protocols/database/log/log-error-repository.protocol'
+import { ok, serverError } from '@/presentation/helpers/http/http.helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { LogControllerDecorator } from './log.decorator'
 
 function makeFakeRequest (): HttpRequest {

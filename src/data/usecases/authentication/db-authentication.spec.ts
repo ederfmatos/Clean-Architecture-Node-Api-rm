@@ -6,7 +6,7 @@ import {
   UpdateAccessTokenRepository
 } from './db-authentication.protocol'
 
-import { AccountModel } from '../../../domain/models/account.model'
+import { AccountModel } from '@/domain/models/account.model'
 import { DbAuthentication } from './db-authentication.usecase'
 
 function makeLoadAccountByEmailRepository (): LoadAccountByEmailRepository {
