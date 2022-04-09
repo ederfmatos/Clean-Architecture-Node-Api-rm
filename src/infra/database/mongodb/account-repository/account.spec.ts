@@ -1,6 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
 import { AccountMongoRepository } from './account.repository'
-import { AccountModel } from '@/data/usecases/add-account/db-add-account.protocol'
+import { AccountModel } from '@/data/usecases/account/add-account/db-add-account.protocol'
 import { Collection } from 'mongodb'
 
 function makeSut (): AccountMongoRepository {

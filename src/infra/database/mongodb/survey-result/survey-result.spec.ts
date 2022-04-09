@@ -2,7 +2,7 @@ import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
 import { SurveyResultMongoRepository } from './survey-result.repository'
 import MockDate from 'mockdate'
 import { Collection } from 'mongodb'
-import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.usecase'
+import { SaveSurveyResultModel } from '@/domain/usecases/account/save-survey-result.usecase'
 
 let surveyCollection: Collection
 let surveyResultCollection: Collection

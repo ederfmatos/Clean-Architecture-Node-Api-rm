@@ -1,5 +1,5 @@
-import { DbLoadAccountByToken } from '@/data/usecases/load-account-by-token/db-load-account-by-token.usecase'
-import { LoadAccountByToken } from '@/domain/usecases/load-account-by-token.usecase'
+import { DbLoadAccountByToken } from '@/data/usecases/account/load-account-by-token/db-load-account-by-token.usecase'
+import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token.usecase'
 import { JwtAdapter } from '@/infra/criptography/jwt/jwt.adapter'
 import { AccountMongoRepository } from '@/infra/database/mongodb/account-repository/account.repository'
 import env from '@/main/config/env'

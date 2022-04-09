@@ -1,5 +1,5 @@
 import { SurveyResultModel } from '@/domain/models/survey-result.model'
-import { SaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.usecase'
+import { SaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/account/save-survey-result.usecase'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 export class SurveyResultMongoRepository implements SaveSurveyResult {
