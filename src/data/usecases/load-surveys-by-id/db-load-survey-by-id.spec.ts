@@ -59,4 +59,10 @@ describe('DBLoadSurveyById', () => {
     const response = sut.loadById('any_id')
     await expect(response).rejects.toThrowError(new Error('any message'))
   })
+
+  test('should returns a survey on LoadSurveyByIdRepository succeds', async () => {
+    const { sut } = makeSut()
+    const surveys = await sut.loadById('any_id')
+    expect(surveys).toEqual(makeSurvey())
+  })
 })
