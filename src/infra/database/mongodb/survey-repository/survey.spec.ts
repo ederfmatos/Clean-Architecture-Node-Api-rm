@@ -1,7 +1,8 @@
+import { SurveyMongoRepository } from './survey.repository'
 import { Collection } from 'mongodb'
 import { SurveyModel } from '@/domain/models/survey.model'
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
-import { SurveyMongoRepository } from './survey.repository'
+import MockDate from 'mockdate'
 
 function makeSut (): SurveyMongoRepository {
   return new SurveyMongoRepository()
@@ -29,10 +30,12 @@ describe('Survey Mongo Repository', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+    MockDate.set(new Date())
   })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
+    MockDate.reset()
   })
 
   beforeEach(async () => {
@@ -84,6 +87,25 @@ describe('Survey Mongo Repository', () => {
 
       const surveys = await sut.findAll()
       expect(surveys.length).toEqual(0)
+    })
+  })
+
+  describe('loadById()', () => {
+    test('should return a survey', async () => {
+      const sut = makeSut()
+
+      const { insertedId } = await surveyCollection.insertOne(makeSurvey('any_question'))
+      const surveyId = insertedId.toString()
+
+      const survey = await sut.loadById(surveyId)
+      expect(survey).toEqual(makeSurvey('any_question'))
+    })
+
+    test('should return null if load by id fails', async () => {
+      const sut = makeSut()
+
+      const survey = await sut.loadById('123456789012345678901234')
+      expect(survey).toBeFalsy()
     })
   })
 })
