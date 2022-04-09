@@ -64,4 +64,10 @@ describe('DbSaveSurveyResult', () => {
     const response = sut.save(makeSaveSurveyResult())
     await expect(response).rejects.toThrowError(new Error('any message'))
   })
+
+  test('should returns a SurveyResultModel on SaveSurveyResultRepository succeds', async () => {
+    const { sut } = makeSut()
+    const survey = await sut.save(makeSaveSurveyResult())
+    expect(survey).toEqual(makeSurveyResultModel())
+  })
 })
