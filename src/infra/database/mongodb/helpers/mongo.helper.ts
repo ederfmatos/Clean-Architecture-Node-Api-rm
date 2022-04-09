@@ -41,7 +41,7 @@ export const MongoHelper = {
     }
 
     const response = {
-      id: mongoResult._id,
+      id: mongoResult._id.toString(),
       ...mongoResult
     }
 
