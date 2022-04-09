@@ -1,5 +1,5 @@
-export type SurveyResultAnswer = {
-  image?: string
+export type SurveyResultModel = {
+  id: string
   surveyId: string
   accountId: string
   answer: string
