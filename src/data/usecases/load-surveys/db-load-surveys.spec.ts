@@ -1,7 +1,6 @@
-import { SurveyModel } from '@/domain/models/survey.model'
-import { LoadSurveysRepository } from '@/data/protocols/database/survey/load-surveys-repository'
 import { DbLoadSurveys } from './db-load-surveys.usecase'
 import MockDate from 'mockdate'
+import { LoadSurveysRepository, SurveyModel } from './db-load-surveys.protocol'
 
 type SutType = {
   sut: DbLoadSurveys
