@@ -1,12 +1,14 @@
 import { Express, Router } from 'express'
 import authRoute from '@/main/routes/auth.route'
 import surveyRoute from '@/main/routes/survey.route'
+import surveyResultRoute from '@/main/routes/survey-result.route'
 
 type Route = (router: Router) => void
 
 const routes: Route[] = [
   authRoute,
-  surveyRoute
+  surveyRoute,
+  surveyResultRoute
 ]
 
 export function configureRoutes (app: Express): void {
