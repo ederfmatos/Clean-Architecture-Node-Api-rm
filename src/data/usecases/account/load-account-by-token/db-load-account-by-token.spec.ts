@@ -1,4 +1,6 @@
-import { AccountModel, Decrypter, LoadAccountByTokenRepository } from './db-load-account-by-token.protocol'
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test'
+import { mockAccountModel } from '@/domain/test'
+import { Decrypter, LoadAccountByTokenRepository } from './db-load-account-by-token.protocol'
 import { DbLoadAccountByToken } from './db-load-account-by-token.usecase'
 
 type SutType = {
@@ -8,37 +10,10 @@ type SutType = {
 }
 
 function makeSut (): SutType {
-  const decrypterStub = makeDecrypter()
-  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepositoryStub()
+  const decrypterStub = mockDecrypter()
+  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository()
   const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
   return { sut, decrypterStub, loadAccountByTokenRepositoryStub }
-}
-
-function makeDecrypter (): Decrypter {
-  class DecrypterStub implements Decrypter {
-    async decrypt (value: string): Promise<string> {
-      return 'any_value'
-    }
-  }
-  return new DecrypterStub()
-}
-
-function makeFakeAccount (): AccountModel {
-  return {
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid_email@mail.com',
-    password: 'valid_password'
-  }
-}
-
-function makeLoadAccountByTokenRepositoryStub (): LoadAccountByTokenRepository {
-  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    async loadByToken (token: string, role?: string): Promise<AccountModel> {
-      return makeFakeAccount()
-    }
-  }
-  return new LoadAccountByTokenRepositoryStub()
 }
 
 describe('DbLoadAccountByToken Usecase', () => {
@@ -87,6 +62,6 @@ describe('DbLoadAccountByToken Usecase', () => {
   test('should return an account on success', async () => {
     const { sut } = makeSut()
     const account = await sut.loadAccountByToken('any-token', 'any_role')
-    expect(account).toEqual(makeFakeAccount())
+    expect(account).toEqual(mockAccountModel())
   })
 })

@@ -1,7 +1,10 @@
+import { AddSurveyController } from './add-survey.controller'
+import { HttpRequest, Validation, AddSurvey } from './add-survey.protocol'
 import { InternalServerError, MissingParamError } from '@/presentation/errors'
 import { badRequest, serverError, noContent } from '@/presentation/helpers/http/http.helper'
-import { HttpRequest, Validation, AddSurvey, AddSurveyParams } from './add-survey.protocol'
-import { AddSurveyController } from './add-survey.controller'
+import { mockValidation } from '@/validation/test'
+import { mockAddSurvey } from '@/presentation/test'
+import { mockAddSurveyParams } from '@/domain/test'
 import MockDate from 'mockdate'
 
 type SutType = {
@@ -11,8 +14,8 @@ type SutType = {
 }
 
 function makeSut (): SutType {
-  const validationStub = makeValidationStub()
-  const addSurveyStub = makeAddSurvey()
+  const validationStub = mockValidation()
+  const addSurveyStub = mockAddSurvey()
   const sut = new AddSurveyController(validationStub, addSurveyStub)
 
   return {
@@ -22,38 +25,10 @@ function makeSut (): SutType {
   }
 }
 
-function makeFakeRequest (): HttpRequest {
+function mockRequest (): HttpRequest {
   return {
-    body: {
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        }
-      ],
-      date: new Date()
-    }
+    body: mockAddSurveyParams()
   }
-}
-
-function makeValidationStub (): Validation {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  return new ValidationStub()
-}
-
-function makeAddSurvey (): AddSurvey {
-  class AddSurveyStub implements AddSurvey {
-    async add (input: AddSurveyParams): Promise<void> {
-    }
-  }
-
-  return new AddSurveyStub()
 }
 
 describe('AddSurvey Controller', () => {
@@ -69,7 +44,7 @@ describe('AddSurvey Controller', () => {
     const { sut, validationStub } = makeSut()
     const validationStubSpy = jest.spyOn(validationStub, 'validate')
 
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
 
     await sut.handle(httpRequest)
 
@@ -82,7 +57,7 @@ describe('AddSurvey Controller', () => {
     jest.spyOn(validationStub, 'validate')
       .mockReturnValueOnce(error)
 
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -93,7 +68,7 @@ describe('AddSurvey Controller', () => {
     const { sut, addSurveyStub } = makeSut()
     const addSurveySpy = jest.spyOn(addSurveyStub, 'add')
 
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
 
     await sut.handle(httpRequest)
 
@@ -106,7 +81,7 @@ describe('AddSurvey Controller', () => {
     jest.spyOn(addSurveyStub, 'add')
       .mockRejectedValueOnce(new Error('any message'))
 
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 
@@ -116,7 +91,7 @@ describe('AddSurvey Controller', () => {
   test('should return 204 on success', async () => {
     const { sut } = makeSut()
 
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
 
     const httpResponse = await sut.handle(httpRequest)
 

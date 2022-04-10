@@ -1,28 +1,11 @@
 import { SurveyMongoRepository } from './survey.repository'
 import { Collection } from 'mongodb'
-import { SurveyModel } from '@/domain/models/survey.model'
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
+import { mockAddSurveyParams, mockSurveyModel } from '@/domain/test'
 import MockDate from 'mockdate'
 
 function makeSut (): SurveyMongoRepository {
   return new SurveyMongoRepository()
-}
-
-function makeSurvey (question: string): SurveyModel {
-  return {
-    question,
-    answers: [
-      {
-        answer: 'any_answer',
-        image: 'any_image'
-      },
-      {
-        answer: 'another_answer'
-      }
-    ],
-    date: new Date(),
-    id: 'any_id'
-  }
 }
 
 describe('Survey Mongo Repository', () => {
@@ -47,19 +30,7 @@ describe('Survey Mongo Repository', () => {
     test('should add survey', async () => {
       const sut = makeSut()
 
-      await sut.add({
-        question: 'any_question',
-        answers: [
-          {
-            answer: 'any_answer',
-            image: 'any_image'
-          },
-          {
-            answer: 'another_answer'
-          }
-        ],
-        date: new Date()
-      })
+      await sut.add(mockAddSurveyParams())
 
       const count = await surveyCollection.countDocuments()
 
@@ -72,8 +43,8 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
 
       await surveyCollection.insertMany([
-        makeSurvey('any_question'),
-        makeSurvey('other_question')
+        mockSurveyModel('any_question'),
+        mockSurveyModel('other_question')
       ])
 
       const surveys = await sut.findAll()
@@ -94,11 +65,11 @@ describe('Survey Mongo Repository', () => {
     test('should return a survey', async () => {
       const sut = makeSut()
 
-      const { insertedId } = await surveyCollection.insertOne(makeSurvey('any_question'))
+      const { insertedId } = await surveyCollection.insertOne(mockSurveyModel('any_question'))
       const surveyId = insertedId.toString()
 
       const survey = await sut.loadById(surveyId)
-      expect(survey).toEqual(makeSurvey('any_question'))
+      expect(survey).toEqual(mockSurveyModel('any_question'))
     })
 
     test('should return null if load by id fails', async () => {
