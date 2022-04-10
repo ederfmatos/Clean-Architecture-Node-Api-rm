@@ -1,4 +1,4 @@
-import { AddSurveyRepository, AddSurveyModel } from './db-add-survey.protocol'
+import { AddSurveyRepository, AddSurveyParams } from './db-add-survey.protocol'
 import { DbAddSurvey } from './db-add-survey.usecase'
 import MockDate from 'mockdate'
 
@@ -9,7 +9,7 @@ type SutType = {
 
 function makeAddSurveyRepositoryStub (): AddSurveyRepository {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (addSurveyModel: AddSurveyModel): Promise<void> { }
+    async add (AddSurveyParams: AddSurveyParams): Promise<void> { }
   }
 
   return new AddSurveyRepositoryStub()
@@ -21,7 +21,7 @@ function makeSut (): SutType {
   return { sut, addSurveyRepositoryStub }
 }
 
-function makeAddSurveyModel (): AddSurveyModel {
+function makeAddSurveyParams (): AddSurveyParams {
   return {
     question: 'any_question',
     answers: [
@@ -47,10 +47,10 @@ describe('DBAddSurvey UseCase', () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add')
 
-    const addSurveyModel = makeAddSurveyModel()
+    const AddSurveyParams = makeAddSurveyParams()
 
-    await sut.add(addSurveyModel)
-    expect(addSpy).toHaveBeenNthCalledWith(1, addSurveyModel)
+    await sut.add(AddSurveyParams)
+    expect(addSpy).toHaveBeenNthCalledWith(1, AddSurveyParams)
   })
 
   test('should throws if AddSurveyRepository throws', async () => {
@@ -59,9 +59,9 @@ describe('DBAddSurvey UseCase', () => {
       throw new Error('any message')
     })
 
-    const addSurveyModel = makeAddSurveyModel()
+    const AddSurveyParams = makeAddSurveyParams()
 
-    const response = sut.add(addSurveyModel)
+    const response = sut.add(AddSurveyParams)
     await expect(response).rejects.toThrowError(new Error('any message'))
   })
 })

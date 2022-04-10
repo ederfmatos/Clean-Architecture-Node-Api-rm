@@ -1,5 +1,5 @@
 import { LoginController } from './login.controller'
-import { Authentication, AuthenticationModel, HttpRequest, Validation } from './login.protocol'
+import { Authentication, AuthenticationParams, HttpRequest, Validation } from './login.protocol'
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http/http.helper'
 
@@ -18,7 +18,7 @@ function makeSut (): SutType {
 
 function makeAuthentication (): Authentication {
   class AuthenticationStub implements Authentication {
-    async authenticate (authModel: AuthenticationModel): Promise<string> {
+    async authenticate (authModel: AuthenticationParams): Promise<string> {
       return 'any_token'
     }
   }

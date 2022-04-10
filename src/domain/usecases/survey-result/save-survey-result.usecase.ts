@@ -1,6 +1,7 @@
 import { SurveyResultModel } from '@/domain/models/survey-result.model'
-import { SaveSurveyResultParams } from '@/domain/usecases/account/save-survey-result.usecase'
 
-export interface SaveSurveyResultRepository {
+export type SaveSurveyResultParams = Omit<SurveyResultModel, 'id'>
+
+export type SaveSurveyResult = {
   save: (SaveSurveyResultParams: SaveSurveyResultParams) => Promise<SurveyResultModel>
 }

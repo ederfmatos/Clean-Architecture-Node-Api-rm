@@ -4,8 +4,8 @@ import {
   AccountModel,
   Authentication,
   AddAccount,
-  AddAccountModel,
-  AuthenticationModel
+  AddAccountParams,
+  AuthenticationParams
 } from './signup.protocol'
 import { SignUpController } from './signup.controller'
 import { InternalServerError, MissingParamError, EmailInUseError } from '@/presentation/errors'
@@ -33,7 +33,7 @@ function makeFakeAccount (): AccountModel {
 
 function makeAddAccount (): AddAccount {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountParams): Promise<AccountModel> {
       return makeFakeAccount()
     }
   }
@@ -53,7 +53,7 @@ function makeValidationStub (): Validation {
 
 function makeAuthentication (): Authentication {
   class AuthenticationStub implements Authentication {
-    async authenticate (authModel: AuthenticationModel): Promise<string> {
+    async authenticate (authModel: AuthenticationParams): Promise<string> {
       return 'any_token'
     }
   }

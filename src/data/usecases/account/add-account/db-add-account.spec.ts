@@ -1,5 +1,5 @@
 import { DbAddAccount } from './db-add-account.usecase'
-import { AccountModel, AddAccountModel, Hasher, LoadAccountByEmailRepository } from './db-add-account.protocol'
+import { AccountModel, AddAccountParams, Hasher, LoadAccountByEmailRepository } from './db-add-account.protocol'
 import { AddAccountRepository } from '@/data/protocols/database/account/add-account-repository.protocol'
 
 type SutType = {
@@ -21,10 +21,10 @@ function makeHasher (): Hasher {
 
 function makeAddAccountRepositoryStub (): AddAccountRepository {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (addAccountModel: AddAccountModel): Promise<AccountModel> {
+    async add (AddAccountParams: AddAccountParams): Promise<AccountModel> {
       return {
         id: 'valid_id',
-        ...addAccountModel
+        ...AddAccountParams
       }
     }
   }
@@ -40,7 +40,7 @@ function makeSut (): SutType {
   return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub }
 }
 
-function makeFakeAddAccount (): AddAccountModel {
+function makeFakeAddAccount (): AddAccountParams {
   return {
     name: 'valid_name',
     email: 'valid_email@mail.com',

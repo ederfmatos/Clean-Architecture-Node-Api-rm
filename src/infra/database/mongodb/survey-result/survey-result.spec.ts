@@ -2,7 +2,7 @@ import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
 import { SurveyResultMongoRepository } from './survey-result.repository'
 import MockDate from 'mockdate'
 import { Collection } from 'mongodb'
-import { SaveSurveyResultModel } from '@/domain/usecases/account/save-survey-result.usecase'
+import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result.usecase'
 
 let surveyCollection: Collection
 let surveyResultCollection: Collection
@@ -12,7 +12,7 @@ function makeSut (): SurveyResultMongoRepository {
   return new SurveyResultMongoRepository()
 }
 
-function makeSurveyResult ({ surveyId, accountId, answer }: { surveyId: string, accountId: string, answer: string }): SaveSurveyResultModel {
+function makeSurveyResult ({ surveyId, accountId, answer }: { surveyId: string, accountId: string, answer: string }): SaveSurveyResultParams {
   return {
     surveyId,
     accountId,

@@ -1,5 +1,5 @@
 import {
-  AuthenticationModel,
+  AuthenticationParams,
   HashComparer,
   Encrypter,
   LoadAccountByEmailRepository,
@@ -55,7 +55,7 @@ function makeSut (): SutType {
   }
 }
 
-function makeFakeAuthentication (): AuthenticationModel {
+function makeFakeAuthentication (): AuthenticationParams {
   return {
     email: 'any_email@mail.com',
     password: 'any_password'

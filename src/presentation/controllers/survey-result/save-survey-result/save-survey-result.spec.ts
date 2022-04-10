@@ -1,4 +1,4 @@
-import { LoadSurveyById, HttpRequest, InvalidParamError, SurveyModel, InternalServerError, SaveSurveyResult, SaveSurveyResultModel, SurveyResultModel } from './save-survey-result.protocol'
+import { LoadSurveyById, HttpRequest, InvalidParamError, SurveyModel, InternalServerError, SaveSurveyResult, SaveSurveyResultParams, SurveyResultModel } from './save-survey-result.protocol'
 import { SaveSurveyResultController } from './save-survey-result.controller'
 import { forbidden, ok, serverError } from '@/presentation/helpers/http/http.helper'
 import MockDate from 'mockdate'
@@ -56,7 +56,7 @@ function makeFakeRequest (): HttpRequest {
 
 function makeSaveSurveyResultStub (): SaveSurveyResult {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (saveSurveyResultModel: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (SaveSurveyResultParams: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return makeSurveyResultModel()
     }
   }

@@ -1,6 +1,6 @@
 import { InternalServerError, MissingParamError } from '@/presentation/errors'
 import { badRequest, serverError, noContent } from '@/presentation/helpers/http/http.helper'
-import { HttpRequest, Validation, AddSurvey, AddSurveyModel } from './add-survey.protocol'
+import { HttpRequest, Validation, AddSurvey, AddSurveyParams } from './add-survey.protocol'
 import { AddSurveyController } from './add-survey.controller'
 import MockDate from 'mockdate'
 
@@ -49,7 +49,7 @@ function makeValidationStub (): Validation {
 
 function makeAddSurvey (): AddSurvey {
   class AddSurveyStub implements AddSurvey {
-    async add (input: AddSurveyModel): Promise<void> {
+    async add (input: AddSurveyParams): Promise<void> {
     }
   }
 

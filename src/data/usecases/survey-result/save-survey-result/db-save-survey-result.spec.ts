@@ -1,5 +1,5 @@
 import { DbSaveSurveyResult } from './db-save-survey-result.usecase'
-import { SurveyResultModel, SaveSurveyResultRepository, SaveSurveyResultModel } from './db-save-survey-result.protocol'
+import { SurveyResultModel, SaveSurveyResultRepository, SaveSurveyResultParams } from './db-save-survey-result.protocol'
 import MockDate from 'mockdate'
 
 type SutType = {
@@ -15,7 +15,7 @@ function makeSut (): SutType {
 
 function makeSaveSurveyResultRepository (): SaveSurveyResultRepository {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save (saveSurveyResultModel: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (SaveSurveyResultParams: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return makeSurveyResultModel()
     }
   }
@@ -32,7 +32,7 @@ function makeSurveyResultModel (): SurveyResultModel {
   }
 }
 
-function makeSaveSurveyResult (): SaveSurveyResultModel {
+function makeSaveSurveyResult (): SaveSurveyResultParams {
   return {
     surveyId: 'any_survey_id',
     accountId: 'any_account_id',
