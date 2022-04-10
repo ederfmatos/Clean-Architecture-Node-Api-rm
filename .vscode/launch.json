@@ -9,6 +9,13 @@
       "port": 9222,
       "restart": true,
       "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Node",
+      "port": 9222,
+      "restart": true
     }
   ]
 }
