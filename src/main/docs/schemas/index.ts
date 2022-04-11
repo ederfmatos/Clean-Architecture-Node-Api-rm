@@ -1,7 +1,8 @@
 import { accountSchema } from './account.schema'
+import { addSurveyInputSchema } from './add-survey-input.schema'
 import { errorSchema } from './error.schema'
 import { loginInputSchema } from './login-input.schema'
-import { signUpInputSchema } from './signupp-input.schema'
+import { signUpInputSchema } from './signup-input.schema'
 import { surveyAnswerSchema } from './survey-answer.schema'
 import { surveySchema } from './survey.schema'
 import { surveysSchema } from './surveys.schema'
@@ -13,5 +14,6 @@ export const schemas = {
   survey: surveySchema,
   surveyAnswer: surveyAnswerSchema,
   surveys: surveysSchema,
-  signUpInput: signUpInputSchema
+  signUpInput: signUpInputSchema,
+  addSurveyInput: addSurveyInputSchema
 }
