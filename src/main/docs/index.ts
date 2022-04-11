@@ -1,6 +1,6 @@
-import * as components from './components'
-import { loginPath } from './paths'
-import { accountSchema, errorSchema, loginInputSchema } from './schemas'
+import { components } from './components'
+import { paths } from './paths'
+import { schemas } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -17,15 +17,12 @@ export default {
     { url: '/api' }
   ],
   tags: [
-    { name: 'Auth' }
+    { name: 'Auth' },
+    { name: 'Enquetes' }
   ],
-  paths: {
-    '/login': loginPath
-  },
-  schemas: {
-    account: accountSchema,
-    loginInput: loginInputSchema,
-    error: errorSchema
-  },
+  paths,
+  schemas,
   components
 }
+
+console.log(JSON.stringify(components, null, 2))
