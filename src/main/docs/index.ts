@@ -24,5 +24,3 @@ export default {
   schemas,
   components
 }
-
-console.log(JSON.stringify(components, null, 2))
