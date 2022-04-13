@@ -1,6 +1,6 @@
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
 import { SurveyResultMongoRepository } from './survey-result.repository'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result.usecase'
 import { mockAddAccountParams } from '@/domain/test'
 import MockDate from 'mockdate'
@@ -80,32 +80,34 @@ describe('SurveyResult Mongo Repository', () => {
       }))
 
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toBeTruthy()
-      expect(surveyResult.answer).toBe('any_answer')
+      expect(surveyResult.surveyId.toString()).toEqual(surveyId)
+      expect(surveyResult.answers[0].answer).toBe('any_answer')
+      expect(surveyResult.answers[0].count).toBe(1)
     })
 
     test('should update survey result is its not new', async () => {
       const { surveyId } = await mockSurvey()
       const { accountId } = await mockAccount()
 
-      const { insertedId } = await surveyResultCollection.insertOne(mockSurveyResult({
-        surveyId,
+      await surveyResultCollection.insertOne({
+        surveyId: new ObjectId(surveyId),
+        accountId: new ObjectId(accountId),
         answer: 'any_answer',
-        accountId
-      }))
-      const surveyResultId = insertedId.toString()
+        date: new Date()
+      })
 
       const sut = makeSut()
       const surveyResult = await sut.save(mockSurveyResult({
         surveyId,
-        answer: 'other_answer',
+        answer: 'another_answer',
         accountId
       }))
 
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toBeTruthy()
-      expect(surveyResult.id).toBe(surveyResultId)
-      expect(surveyResult.answer).toBe('other_answer')
+      expect(surveyResult.surveyId.toString()).toEqual(surveyId)
+      expect(surveyResult.answers[0].answer).toBe('another_answer')
+      expect(surveyResult.answers[0].count).toBe(1)
+      expect(surveyResult.answers[0].percent).toBe(100)
     })
   })
 })
