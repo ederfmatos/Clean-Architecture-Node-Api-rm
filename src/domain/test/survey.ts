@@ -24,7 +24,8 @@ export function mockSurveyModel (question = 'any_question'): SurveyModel {
         answer: 'any_answer'
       }
     ],
-    date: new Date()
+    date: new Date(),
+    didAnswer: false
   }
 }
 

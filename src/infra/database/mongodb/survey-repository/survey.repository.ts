@@ -1,6 +1,6 @@
 import { LoadSurveysRepository } from '@/data/protocols/database/survey/load-surveys-repository'
 import { AddSurveyParams, AddSurveyRepository, SurveyModel } from '@/data/usecases/survey/add-survey/db-add-survey.protocol'
-import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
+import { MongoHelper, QueryBuilder } from '@/infra/database/mongodb/helpers'
 import { LoadSurveyByIdRepository } from '@/data/protocols/database/survey/load-survey-by-id-repository'
 import { ObjectId } from 'mongodb'
 
@@ -12,10 +12,38 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
       .then(result => MongoHelper.map(result, AddSurveyParams))
   }
 
-  async findAll (): Promise<SurveyModel[]> {
+  async findAll (accountId: string): Promise<SurveyModel[]> {
     const surveyCollection = await MongoHelper.getCollection<SurveyModel>('surveys')
 
-    return surveyCollection.find()
+    const query = new QueryBuilder()
+      .lookup({
+        from: 'survey-results',
+        foreignField: 'surveyId',
+        localField: '_id',
+        as: 'result'
+      })
+      .project({
+        _id: 1,
+        question: 1,
+        answers: 1,
+        date: 1,
+        didAnswer: {
+          $gte: [{
+            $size: {
+              $filter: {
+                input: '$result',
+                as: 'item',
+                cond: {
+                  $eq: ['$$item.accountId', new ObjectId(accountId)]
+                }
+              }
+            }
+          }, 1]
+        }
+      })
+      .build()
+
+    return surveyCollection.aggregate(query)
       .map(survey => MongoHelper.mapResult<SurveyModel>(survey))
       .toArray()
   }

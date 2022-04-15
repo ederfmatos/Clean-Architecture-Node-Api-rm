@@ -14,8 +14,6 @@ export function handleExpressRoute (controller: Controller) {
       return response.status(statusCode).json(body)
     }
 
-    console.log('An error has occurred', { statusCode, body })
-
     return response.status(statusCode)
       .json({ error: body.message })
   }

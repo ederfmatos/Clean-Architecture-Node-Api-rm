@@ -1,16 +1,24 @@
 import { SurveyMongoRepository } from './survey.repository'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo.helper'
-import { mockAddSurveyParams, mockSurveyModel } from '@/domain/test'
+import { mockAddAccountParams, mockAddSurveyParams, mockSurveyModel } from '@/domain/test'
 import MockDate from 'mockdate'
+
+let surveyCollection: Collection
+let surveyResultCollection: Collection
+let accountCollection: Collection
 
 function makeSut (): SurveyMongoRepository {
   return new SurveyMongoRepository()
 }
 
-describe('Survey Mongo Repository', () => {
-  let surveyCollection: Collection
+async function mockAccount (): Promise<{ accountId: string }> {
+  const { insertedId } = await accountCollection.insertOne(mockAddAccountParams())
 
+  return { accountId: insertedId.toString() }
+}
+
+describe('Survey Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
     MockDate.set(new Date())
@@ -23,7 +31,14 @@ describe('Survey Mongo Repository', () => {
 
   beforeEach(async () => {
     surveyCollection = await MongoHelper.getCollection('surveys')
-    await surveyCollection.deleteMany({})
+    accountCollection = await MongoHelper.getCollection('accounts')
+    surveyResultCollection = await MongoHelper.getCollection('survey-results')
+
+    await Promise.all([
+      surveyCollection.deleteMany({}),
+      accountCollection.deleteMany({}),
+      surveyResultCollection.deleteMany({})
+    ])
   })
 
   describe('add()', () => {
@@ -40,23 +55,36 @@ describe('Survey Mongo Repository', () => {
 
   describe('findAll()', () => {
     test('should return a list os Surveys', async () => {
+      const { accountId } = await mockAccount()
       const sut = makeSut()
 
-      await surveyCollection.insertMany([
+      const response = await surveyCollection.insertMany([
         mockSurveyModel('any_question'),
         mockSurveyModel('other_question')
       ])
+      const surveyId = response.insertedIds[0].toString()
 
-      const surveys = await sut.findAll()
+      await surveyResultCollection.insertOne({
+        surveyId: new ObjectId(surveyId),
+        accountId: new ObjectId(accountId),
+        answer: 'any_answer',
+        date: new Date()
+      })
+
+      const surveys = await sut.findAll(accountId)
+
       expect(surveys.length).toEqual(2)
       expect(surveys[0].question).toEqual('any_question')
+      expect(surveys[0].didAnswer).toBe(true)
       expect(surveys[1].question).toEqual('other_question')
+      expect(surveys[1].didAnswer).toBe(false)
     })
 
     test('should return empty list', async () => {
+      const { accountId } = await mockAccount()
       const sut = makeSut()
 
-      const surveys = await sut.findAll()
+      const surveys = await sut.findAll(accountId)
       expect(surveys.length).toEqual(0)
     })
   })
