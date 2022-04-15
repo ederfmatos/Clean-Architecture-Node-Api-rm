@@ -23,6 +23,22 @@ export function mockSurveyResultModel (): SurveyResultModel {
   }
 }
 
+export function mockEmptySurveyResultModel (): SurveyResultModel {
+  return {
+    surveyId: 'any_id',
+    question: 'any_question',
+    answers: [
+      {
+        answer: 'any_answer',
+        count: 0,
+        percent: 0,
+        image: 'any_image'
+      }
+    ],
+    date: new Date()
+  }
+}
+
 export function mockSaveSurveyResultParams (): SaveSurveyResultParams {
   return {
     surveyId: 'any_survey_id',
