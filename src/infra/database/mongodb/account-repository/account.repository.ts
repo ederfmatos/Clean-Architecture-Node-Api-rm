@@ -6,11 +6,11 @@ import { AccountModel, AddAccountParams } from '@/data/usecases/account/add-acco
 import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
-  async add (AddAccountParams: AddAccountParams): Promise<AccountModel> {
+  async add (addAccountParams: AddAccountParams): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
 
-    return accountCollection.insertOne(AddAccountParams)
-      .then(result => MongoHelper.map(result, AddAccountParams))
+    return accountCollection.insertOne(addAccountParams)
+      .then(result => MongoHelper.map(result, addAccountParams))
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {
