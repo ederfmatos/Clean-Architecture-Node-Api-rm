@@ -183,7 +183,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 - Find, FindOne e FindOneAndUpdate
 - DeleteMany
 - UpdateOne
-- Aggregation (Match, Group, Unwind, Lookup, AddFields, Project, Sort)
+- Aggregation (Match, Group, Unwind, Lookup, Project, Sort)
 - ObjectId
 - Upsert e ReturnOriginal
 - Push, Divide, Multiply, ArrayElemAt, Cond, Sum
