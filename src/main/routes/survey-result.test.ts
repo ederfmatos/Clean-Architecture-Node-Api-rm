@@ -33,8 +33,7 @@ describe('Survey Result Route', () => {
     const { insertedId } = await surveyCollection.insertOne({
       question: 'any_question',
       answers: [{ answer: 'Answer 1', image: 'any_image' }, { answer: 'Answer 2', image: 'any_image' }],
-      date: new Date(),
-      id: 'any_id'
+      date: new Date()
     })
 
     return insertedId.toString()
@@ -88,6 +87,17 @@ describe('Survey Result Route', () => {
       await request(app)
         .get('/api/surveys/any_id/results')
         .expect(403)
+    })
+
+    test('should return 200 on load survey result succeds', async () => {
+      const accessToken = await makeAccessToken()
+
+      const surveyId = await makeSurvey()
+
+      await request(app)
+        .get(`/api/surveys/${surveyId}/results`)
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })
