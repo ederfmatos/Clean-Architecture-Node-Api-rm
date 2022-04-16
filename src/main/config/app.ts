@@ -1,8 +1,8 @@
-import express from 'express'
 import { configureMiddlewares } from './middlewares'
 import { configureRoutes } from './routes'
 import { configureStaticFiles } from './static-files'
 import { configureSwagger } from './swagger'
+import express from 'express'
 
 const app = express()
 

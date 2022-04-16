@@ -1,9 +1,7 @@
 import { Router } from 'express'
-import { handleExpressRoute } from '@/main/adapters/express/express-route.adapter'
-import { makeAddSurveyController } from '@/main/factories/controllers/survey/add-survey/add-survey.factory'
-import { makeLoadSurveysController } from '@/main/factories/controllers/survey/load-surveys/load-surveys.factory'
-import { adminAuthMiddleware } from '@/main/middlewares/auth/admin-auth'
-import { authMiddleware } from '@/main/middlewares/auth/auth'
+import { handleExpressRoute } from '@/main/adapters'
+import { makeAddSurveyController, makeLoadSurveysController } from '@/main/factories'
+import { adminAuthMiddleware, authMiddleware } from '@/main/middlewares'
 
 export default (router: Router): void => {
   router.post('/surveys', adminAuthMiddleware, handleExpressRoute(makeAddSurveyController()))
