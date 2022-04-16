@@ -10,13 +10,15 @@ export function mockSurveyResultModel (): SurveyResultModel {
         answer: 'any_answer',
         count: 10,
         percent: 25,
-        image: 'any_image'
+        image: 'any_image',
+        isCurrentAccountAnswer: false
       },
       {
         answer: 'other_answer',
         count: 30,
         percent: 75,
-        image: 'any_image'
+        image: 'any_image',
+        isCurrentAccountAnswer: false
       }
     ],
     date: new Date()
@@ -32,7 +34,8 @@ export function mockEmptySurveyResultModel (): SurveyResultModel {
         answer: 'any_answer',
         count: 0,
         percent: 0,
-        image: 'any_image'
+        image: 'any_image',
+        isCurrentAccountAnswer: false
       }
     ],
     date: new Date()
