@@ -5,6 +5,6 @@ export type AuthenticationParams = {
   password: string
 }
 
-export type Authentication = {
+export interface Authentication {
   authenticate: (authModel: AuthenticationParams) => Promise<AuthenticationModel>
 }

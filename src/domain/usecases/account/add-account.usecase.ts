@@ -2,6 +2,6 @@ import { AccountModel } from '@/domain/models'
 
 export type AddAccountParams = Omit<AccountModel, 'id'>
 
-export type AddAccount = {
+export interface AddAccount {
   add: (account: AddAccountParams) => Promise<AccountModel>
 }
