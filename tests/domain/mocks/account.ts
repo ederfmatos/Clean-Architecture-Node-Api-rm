@@ -1,5 +1,5 @@
 import { AccountModel } from '@/domain/models'
-import { AddAccountParams, AuthenticationParams } from '@/domain/usecases'
+import { Authentication, AddAccount } from '@/domain/usecases'
 
 export function mockAccountModel (): AccountModel {
   return {
@@ -21,7 +21,7 @@ export function mockAccountModelWithToken (role?: string): AccountModel & {role?
   }
 }
 
-export function mockAddAccountParams (): AddAccountParams {
+export function mockAddAccountParams (): AddAccount.Params {
   return {
     name: 'any_name',
     email: 'any_email@mail.com',
@@ -29,7 +29,7 @@ export function mockAddAccountParams (): AddAccountParams {
   }
 }
 
-export function mockAuthenticationParams (): AuthenticationParams {
+export function mockAuthenticationParams (): Authentication.Params {
   return {
     email: 'any_email@mail.com',
     password: 'any_password'
