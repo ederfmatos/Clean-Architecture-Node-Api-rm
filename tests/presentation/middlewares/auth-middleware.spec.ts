@@ -1,7 +1,6 @@
 import { AccessDeniedError, InternalServerError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers'
 import { AuthMiddleware } from '@/presentation/middlewares'
-import { HttpRequest } from '@/presentation/protocols'
 import { LoadAccountByToken } from '@/domain/usecases'
 import { mockLoadAccountByToken } from '@/tests/presentation/mocks'
 
@@ -17,11 +16,9 @@ function makeSut (role?: string): SutType {
   return { sut, loadAccountByTokenStub }
 }
 
-function mockRequest (): HttpRequest {
+function mockRequest (): AuthMiddleware.Request {
   return {
-    headers: {
-      'x-access-token': 'any_token'
-    }
+    accessToken: 'any_token'
   }
 }
 
@@ -29,7 +26,7 @@ describe('Auth Middleware', () => {
   test('should return 403 if no x-access-token header exists in request', async () => {
     const { sut } = makeSut()
 
-    const httpResponse = await sut.handle({ headers: {} })
+    const httpResponse = await sut.handle({ })
 
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
@@ -38,11 +35,11 @@ describe('Auth Middleware', () => {
     const role = 'any-role'
     const { sut, loadAccountByTokenStub } = makeSut(role)
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'loadAccountByToken')
-    const httpRequest = mockRequest()
+    const request = mockRequest()
 
-    await sut.handle(httpRequest)
+    await sut.handle(request)
 
-    expect(loadSpy).toHaveBeenNthCalledWith(1, httpRequest.headers['x-access-token'], role)
+    expect(loadSpy).toHaveBeenNthCalledWith(1, request.accessToken, role)
   })
 
   test('should return 403 if LoadAccountByToken returns null', async () => {

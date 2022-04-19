@@ -1,6 +1,5 @@
 
 import { LoadSurveyById, SaveSurveyResult } from '@/domain/usecases'
-import { HttpRequest } from '@/presentation/protocols'
 import { forbidden, serverError, ok } from '@/presentation/helpers'
 import { SaveSurveyResultController } from '@/presentation/controllers'
 import { InvalidParamError, InternalServerError } from '@/presentation/errors'
@@ -21,17 +20,11 @@ function makeSut (): SutType {
   return { sut, loadSurveyByIdStub, saveSurveyResultStub }
 }
 
-function mockRequest (): HttpRequest {
+function mockRequest (): SaveSurveyResultController.Request {
   return {
-    params: {
-      surveyId: 'any_survey_id'
-    },
-    body: {
-      answer: 'any_answer'
-    },
-    account: {
-      id: 'any_account_id'
-    }
+    surveyId: 'any_survey_id',
+    answer: 'any_answer',
+    accountId: 'any_account_id'
   }
 }
 
@@ -63,14 +56,14 @@ describe('SaveSurveyResult Controller', () => {
   test('should return 500 if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest.spyOn(loadSurveyByIdStub, 'loadById').mockRejectedValue(new Error('any message'))
-    const httpResponse = await sut.handle({})
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new InternalServerError()))
   })
 
   test('should return 403 if an invalid answer is provided', async () => {
     const { sut } = makeSut()
     const request = mockRequest()
-    request.body = { answer: 'invalid_answer' }
+    request.answer = 'invalid_answer'
     const response = await sut.handle(request)
     expect(response).toEqual(forbidden(new InvalidParamError('answer')))
   })
@@ -90,7 +83,7 @@ describe('SaveSurveyResult Controller', () => {
   test('should return 500 if SaveSurveyResult throws', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
     jest.spyOn(saveSurveyResultStub, 'save').mockRejectedValue(new Error('any message'))
-    const httpResponse = await sut.handle({})
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new InternalServerError()))
   })
 

@@ -8,6 +8,7 @@
     "@typescript-eslint/promise-function-async": "off",
     "@typescript-eslint/return-await": "off",
     "@typescript-eslint/no-misused-promises": "off",
-    "@typescript-eslint/consistent-type-definitions": "off"
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/no-namespace": "off"
   }
 }

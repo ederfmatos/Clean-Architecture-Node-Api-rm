@@ -1,6 +1,5 @@
 
 import { LoadSurveyById, LoadSurveyResult } from '@/domain/usecases'
-import { HttpRequest } from '@/presentation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, serverError, ok } from '@/presentation/helpers'
 import { LoadSurveyResultController } from '@/presentation/controllers'
@@ -26,14 +25,10 @@ function makeSut (): SutType {
   }
 }
 
-function mockRequest (): HttpRequest {
+function mockRequest (): LoadSurveyResultController.Request {
   return {
-    account: {
-      id: 'any_account_id'
-    },
-    params: {
-      surveyId: 'any_id'
-    }
+    accountId: 'any_account_id',
+    surveyId: 'any_id'
   }
 }
 

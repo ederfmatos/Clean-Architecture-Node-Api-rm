@@ -1,6 +1,5 @@
 
 import { LoadSurveys } from '@/domain/usecases'
-import { HttpRequest } from '@/presentation/protocols'
 import { InternalServerError } from '@/presentation/errors'
 import { LoadSurveysController } from '@/presentation/controllers'
 import { serverError, ok, noContent } from '@/presentation/helpers'
@@ -19,11 +18,9 @@ function makeSut (): SutType {
   return { sut, loadSurveysStub }
 }
 
-function mockRequest (): HttpRequest {
+function mockRequest (): LoadSurveysController.Request {
   return {
-    account: {
-      id: 'any_account_id'
-    }
+    accountId: 'any_account_id'
   }
 }
 

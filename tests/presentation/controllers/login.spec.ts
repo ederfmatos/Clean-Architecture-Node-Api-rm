@@ -1,7 +1,7 @@
 import { Authentication } from '@/domain/usecases'
 import { MissingParamError } from '@/presentation/errors'
 import { LoginController } from '@/presentation/controllers'
-import { Validation, HttpRequest } from '@/presentation/protocols'
+import { Validation } from '@/presentation/protocols'
 import { unauthorized, serverError, ok, badRequest } from '@/presentation/helpers'
 import { mockValidation } from '@/tests/validation/mocks'
 import { mockAuthentication } from '@/tests/presentation/mocks'
@@ -19,12 +19,10 @@ function makeSut (): SutType {
   return { sut, authenticationStub, validationStub }
 }
 
-function mockRequest (): HttpRequest {
+function mockRequest (): LoginController.Request {
   return {
-    body: {
-      email: 'any_email@mail.com',
-      password: 'any_password'
-    }
+    email: 'any_email@mail.com',
+    password: 'any_password'
   }
 }
 
@@ -33,13 +31,13 @@ describe('Login Controller', () => {
     const { sut, authenticationStub } = makeSut()
     const authenticationSpy = jest.spyOn(authenticationStub, 'authenticate')
 
-    const httpRequest = mockRequest()
+    const request = mockRequest()
 
-    await sut.handle(httpRequest)
+    await sut.handle(request)
 
     expect(authenticationSpy).toHaveBeenNthCalledWith(1, {
-      email: httpRequest.body.email,
-      password: httpRequest.body.password
+      email: request.email,
+      password: request.password
     })
   })
 
@@ -76,11 +74,11 @@ describe('Login Controller', () => {
     const { sut, validationStub } = makeSut()
     const validationStubSpy = jest.spyOn(validationStub, 'validate')
 
-    const httpRequest = mockRequest()
+    const request = mockRequest()
 
-    await sut.handle(httpRequest)
+    await sut.handle(request)
 
-    expect(validationStubSpy).toHaveBeenNthCalledWith(1, httpRequest.body)
+    expect(validationStubSpy).toHaveBeenNthCalledWith(1, request)
   })
 
   test('should return 400 if Validation returns an error', async () => {
@@ -89,9 +87,9 @@ describe('Login Controller', () => {
     jest.spyOn(validationStub, 'validate')
       .mockReturnValueOnce(error)
 
-    const httpRequest = mockRequest()
+    const request = mockRequest()
 
-    const httpResponse = await sut.handle(httpRequest)
+    const httpResponse = await sut.handle(request)
 
     expect(httpResponse).toEqual(badRequest(error))
   })
