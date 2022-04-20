@@ -1,9 +1,9 @@
 import { Controller } from '@/presentation/protocols'
 import { SaveSurveyResultController } from '@/presentation/controllers'
-import { makeLogControllerDecorator, makeDbLoadSurveyById, makeDbSaveSurveyResultFactory } from '@/main/factories'
+import { makeLogControllerDecorator, makeDbLoadAnswersBySurvey, makeDbSaveSurveyResultFactory } from '@/main/factories'
 
 export function makeSaveSurveyResultController (): Controller {
-  const loadSurveyById = makeDbLoadSurveyById()
+  const loadSurveyById = makeDbLoadAnswersBySurvey()
   const saveSurveyResult = makeDbSaveSurveyResultFactory()
   const controller = new SaveSurveyResultController(loadSurveyById, saveSurveyResult)
 
