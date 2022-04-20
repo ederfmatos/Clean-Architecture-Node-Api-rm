@@ -1,8 +1,8 @@
-import { AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, ExistsSurveyByIdRepository } from '@/data/protocols'
+import { AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, ExistsSurveyByIdRepository, LoadAnswersBySurveyRepository } from '@/data/protocols'
 import { MongoHelper, QueryBuilder } from '.'
 import { ObjectId } from 'mongodb'
 
-export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, ExistsSurveyByIdRepository {
+export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, ExistsSurveyByIdRepository, LoadAnswersBySurveyRepository {
   async add (addSurveyParams: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
 
@@ -51,13 +51,25 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
     return MongoHelper.mapResult(survey)
   }
 
+  async loadAnswers (id: string): Promise<LoadAnswersBySurveyRepository.Response> {
+    const surveyCollection = await MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
+
+    const query = new QueryBuilder()
+      .match({ _id: new ObjectId(id) })
+      .project({ _id: 0, answers: '$answers.answer' })
+      .build()
+
+    const survey = await surveyCollection.aggregate(query).tryNext()
+    return survey?.answers
+  }
+
   async existsById (id: string): Promise<ExistsSurveyByIdRepository.Response> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
 
     const survey = await surveyCollection.findOne(
-      { _id: new ObjectId(id) }, {
-        projection: { _id: 1 }
-      })
+      { _id: new ObjectId(id) },
+      { projection: { _id: 1 } }
+    )
     return survey !== null
   }
 }

@@ -125,4 +125,23 @@ describe('Survey Mongo Repository', () => {
       expect(exists).toBe(false)
     })
   })
+
+  describe('loadAnswers()', () => {
+    test('should load answers on success', async () => {
+      const sut = makeSut()
+
+      const { insertedId } = await surveyCollection.insertOne(mockSurveyModel('any_question'))
+      const surveyId = insertedId.toString()
+
+      const answers = await sut.loadAnswers(surveyId)
+      expect(answers).toEqual(['any_answer'])
+    })
+
+    test('should null on if survey does not exists', async () => {
+      const sut = makeSut()
+
+      const answers = await sut.loadAnswers('123456789012345678901234')
+      expect(answers).toBeFalsy()
+    })
+  })
 })
