@@ -1,4 +1,4 @@
-import { LoadAccountByTokenRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/protocols'
+import { LoadAccountByTokenRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ExistsAccountByEmailRepository } from '@/data/protocols'
 
 export function mockAddAccountRepository (): AddAccountRepository {
   class AddAccountRepositoryStub implements AddAccountRepository {
@@ -8,6 +8,16 @@ export function mockAddAccountRepository (): AddAccountRepository {
   }
 
   return new AddAccountRepositoryStub()
+}
+
+export function mockExistsAccountByEmailRepository (): ExistsAccountByEmailRepository {
+  class ExistsAccountByEmailRepositoryStub implements ExistsAccountByEmailRepository {
+    async existsByEmail (email: string): Promise<ExistsAccountByEmailRepository.Response> {
+      return false
+    }
+  }
+
+  return new ExistsAccountByEmailRepositoryStub()
 }
 
 export function mockLoadAccountByEmailRepository (): LoadAccountByEmailRepository {

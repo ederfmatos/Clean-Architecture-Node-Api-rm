@@ -1,23 +1,21 @@
 import { mockAddAccountParams } from '@/tests/domain/mocks'
-import { Hasher, AddAccountRepository, LoadAccountByEmailRepository } from '@/data/protocols'
+import { Hasher, AddAccountRepository, ExistsAccountByEmailRepository } from '@/data/protocols'
 import { DbAddAccount } from '@/data/usecases'
-import { mockAddAccountRepository, mockHasher, mockLoadAccountByEmailRepository } from '@/tests/data/mocks'
+import { mockAddAccountRepository, mockHasher, mockExistsAccountByEmailRepository } from '@/tests/data/mocks'
 
 type SutType = {
   sut: DbAddAccount
   hasherStub: Hasher
   addAccountRepositoryStub: AddAccountRepository
-  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+  existsAccountByEmailRepositoryStub: ExistsAccountByEmailRepository
 }
 
 function makeSut (): SutType {
-  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmailRepository()
-  jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValue(null)
-
+  const existsAccountByEmailRepositoryStub = mockExistsAccountByEmailRepository()
   const hasherStub = mockHasher()
   const addAccountRepositoryStub = mockAddAccountRepository()
-  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub)
-  return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub }
+  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub, existsAccountByEmailRepositoryStub)
+  return { sut, hasherStub, addAccountRepositoryStub, existsAccountByEmailRepositoryStub }
 }
 
 describe('DbAddAccount UseCase', () => {
@@ -83,8 +81,8 @@ describe('DbAddAccount UseCase', () => {
   })
 
   test('should call LoadAccountByEmailRepository with correct email', async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+    const { sut, existsAccountByEmailRepositoryStub } = makeSut()
+    const loadSpy = jest.spyOn(existsAccountByEmailRepositoryStub, 'existsByEmail')
 
     const account = mockAddAccountParams()
 
@@ -93,15 +91,11 @@ describe('DbAddAccount UseCase', () => {
     expect(loadSpy).toHaveBeenNthCalledWith(1, account.email)
   })
 
-  test('should return false if LoadAccountByEmailRepository returns an account', async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+  test('should return false if LoadAccountByEmailRepository returns true', async () => {
+    const { sut, existsAccountByEmailRepositoryStub } = makeSut()
 
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockResolvedValueOnce({
-        id: 'any_id',
-        name: 'any_name',
-        password: 'any_password'
-      })
+    jest.spyOn(existsAccountByEmailRepositoryStub, 'existsByEmail')
+      .mockResolvedValueOnce(true)
 
     const isValid = await sut.add(mockAddAccountParams())
     expect(isValid).toBe(false)
