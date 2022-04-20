@@ -1,5 +1,3 @@
-import { AccountModel } from '@/domain/models'
-
 export interface AddAccountRepository {
   add: (addAccountModel: AddAccountRepository.Params) => Promise<AddAccountRepository.Response>
 }
@@ -12,5 +10,5 @@ export namespace AddAccountRepository {
     accessToken?: string
   }
 
-  export type Response = AccountModel
+  export type Response = boolean
 }

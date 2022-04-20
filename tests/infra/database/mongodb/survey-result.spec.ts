@@ -1,4 +1,4 @@
-import { SaveSurveyResultParams } from '@/domain/usecases'
+import { SaveSurveyResult } from '@/domain/usecases'
 import { MongoHelper, SurveyResultMongoRepository } from '@/infra/database/mongodb'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 import MockDate from 'mockdate'
@@ -12,7 +12,7 @@ function makeSut (): SurveyResultMongoRepository {
   return new SurveyResultMongoRepository()
 }
 
-function mockSurveyResult ({ surveyId, accountId, answer }: { surveyId: string, accountId: string, answer: string }): SaveSurveyResultParams {
+function mockSurveyResult ({ surveyId, accountId, answer }: { surveyId: string, accountId: string, answer: string }): SaveSurveyResult.Params {
   return {
     surveyId,
     accountId,

@@ -1,17 +1,17 @@
-import { AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, Survey, AddSurveyModel } from '@/data/protocols'
-import { ObjectId } from 'mongodb'
+import { AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository } from '@/data/protocols'
 import { MongoHelper, QueryBuilder } from '.'
+import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository {
-  async add (addSurveyParams: AddSurveyModel): Promise<void> {
+  async add (addSurveyParams: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
 
     return surveyCollection.insertOne(addSurveyParams)
       .then(result => MongoHelper.map(result, addSurveyParams))
   }
 
-  async findAll (accountId: string): Promise<Survey[]> {
-    const surveyCollection = await MongoHelper.getCollection<Survey>('surveys')
+  async findAll (accountId: string): Promise<LoadSurveysRepository.Response[]> {
+    const surveyCollection = await MongoHelper.getCollection<LoadSurveysRepository.Response>('surveys')
 
     const query = new QueryBuilder()
       .lookup({
@@ -31,9 +31,7 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
               $filter: {
                 input: '$result',
                 as: 'item',
-                cond: {
-                  $eq: ['$$item.accountId', new ObjectId(accountId)]
-                }
+                cond: { $eq: ['$$item.accountId', new ObjectId(accountId)] }
               }
             }
           }, 1]
@@ -42,12 +40,12 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
       .build()
 
     return surveyCollection.aggregate(query)
-      .map(survey => MongoHelper.mapResult<Survey>(survey))
+      .map(survey => MongoHelper.mapResult<LoadSurveysRepository.Response>(survey))
       .toArray()
   }
 
-  async loadById (id: string): Promise<Survey> {
-    const surveyCollection = await MongoHelper.getCollection<Survey>('surveys')
+  async loadById (id: string): Promise<LoadSurveyByIdRepository.Response> {
+    const surveyCollection = await MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
 
     const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
     return MongoHelper.mapResult(survey)

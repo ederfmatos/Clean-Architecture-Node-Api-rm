@@ -1,11 +1,9 @@
 import { LoadAccountByTokenRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/protocols'
-import { AccountModel } from '@/domain/models'
-import { mockAccountModel } from '@/tests/domain/mocks'
 
 export function mockAddAccountRepository (): AddAccountRepository {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add (addAccountModel: AddAccountRepository.Params): Promise<AddAccountRepository.Response> {
-      return mockAccountModel()
+      return true
     }
   }
 
@@ -14,8 +12,12 @@ export function mockAddAccountRepository (): AddAccountRepository {
 
 export function mockLoadAccountByEmailRepository (): LoadAccountByEmailRepository {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel> {
-      return mockAccountModel()
+    async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Response> {
+      return {
+        id: 'any_id',
+        name: 'any_name',
+        password: 'hashed_password'
+      }
     }
   }
 
@@ -24,8 +26,8 @@ export function mockLoadAccountByEmailRepository (): LoadAccountByEmailRepositor
 
 export function mockLoadAccountByTokenRepository (): LoadAccountByTokenRepository {
   class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    async loadByToken (token: string, role?: string): Promise<AccountModel> {
-      return mockAccountModel()
+    async loadByToken (token: string, role?: string): Promise<LoadAccountByTokenRepository.Response> {
+      return { id: 'any_id' }
     }
   }
   return new LoadAccountByTokenRepositoryStub()

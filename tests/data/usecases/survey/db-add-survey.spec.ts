@@ -29,10 +29,10 @@ describe('DBAddSurvey UseCase', () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add')
 
-    const AddSurveyParams = mockAddSurveyParams()
+    const params = mockAddSurveyParams()
 
-    await sut.add(AddSurveyParams)
-    expect(addSpy).toHaveBeenNthCalledWith(1, AddSurveyParams)
+    await sut.add(params)
+    expect(addSpy).toHaveBeenNthCalledWith(1, params)
   })
 
   test('should throws if AddSurveyRepository throws', async () => {
@@ -41,9 +41,9 @@ describe('DBAddSurvey UseCase', () => {
       throw new Error('any message')
     })
 
-    const AddSurveyParams = mockAddSurveyParams()
+    const params = mockAddSurveyParams()
 
-    const response = sut.add(AddSurveyParams)
+    const response = sut.add(params)
     await expect(response).rejects.toThrowError(new Error('any message'))
   })
 })

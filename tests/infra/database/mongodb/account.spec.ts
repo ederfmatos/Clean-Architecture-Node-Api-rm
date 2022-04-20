@@ -1,10 +1,20 @@
-import { AccountModel } from '@/domain/models'
 import { AccountMongoRepository, MongoHelper } from '@/infra/database/mongodb'
-import { mockAccountModelWithToken, mockAddAccountParams } from '@/tests/domain/mocks'
+import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { Collection } from 'mongodb'
 
 function makeSut (): AccountMongoRepository {
   return new AccountMongoRepository()
+}
+
+function mockAccountModelWithToken (role?: string): any {
+  return {
+    id: 'any_id',
+    name: 'any_name',
+    email: 'any_email@mail.com',
+    password: 'hashed_password',
+    accessToken: 'any_token',
+    role
+  }
 }
 
 describe('Account Mongo Repository', () => {
@@ -29,11 +39,7 @@ describe('Account Mongo Repository', () => {
 
       const account = await sut.add(mockAddAccountParams())
 
-      expect(account).toBeTruthy()
-      expect(account.id).toBeTruthy()
-      expect(account.name).toBe('any_name')
-      expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('any_password')
+      expect(account).toBe(true)
     })
   })
 
@@ -48,7 +54,6 @@ describe('Account Mongo Repository', () => {
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toBe('any_name')
-      expect(account.email).toBe('any_email@mail.com')
       expect(account.password).toBe('any_password')
     })
 
@@ -69,12 +74,12 @@ describe('Account Mongo Repository', () => {
 
       const accountId = insertedId.toString()
 
-      let account = await accountCollection.findOne<AccountModel>()
+      let account = await accountCollection.findOne<{accessToken: string}>()
       expect(account.accessToken).toBeFalsy()
 
       await sut.updateAccessToken(accountId, 'new_access_token')
 
-      account = await accountCollection.findOne<AccountModel>()
+      account = await accountCollection.findOne<{accessToken: string}>()
 
       expect(account).toBeTruthy()
       expect(account.accessToken).toBe('new_access_token')
@@ -91,9 +96,6 @@ describe('Account Mongo Repository', () => {
 
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
-      expect(account.name).toBe('any_name')
-      expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('hashed_password')
     })
 
     test('should return an account on load by token with admin role success', async () => {
@@ -111,9 +113,6 @@ describe('Account Mongo Repository', () => {
 
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
-      expect(account.name).toBe('any_name')
-      expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('any_password')
     })
 
     test('should return null on load by token with role fails', async () => {
@@ -153,9 +152,6 @@ describe('Account Mongo Repository', () => {
 
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
-      expect(account.name).toBe('any_name')
-      expect(account.email).toBe('any_email@mail.com')
-      expect(account.password).toBe('hashed_password')
     })
   })
 })

@@ -1,7 +1,7 @@
 import { DbAuthentication } from '@/data/usecases'
 import { LoadAccountByEmailRepository, HashComparer, Encrypter, UpdateAccessTokenRepository } from '@/data/protocols'
-import { mockAuthenticationParams } from '@/tests/domain/mocks'
 import { mockEncrypter, mockHashComparer, mockLoadAccountByEmailRepository, mockUpdateAccessTokenRepository } from '@/tests/data/mocks'
+import { Authentication } from '@/domain/usecases'
 
 type SutType = {
   sut: DbAuthentication
@@ -30,6 +30,13 @@ function makeSut (): SutType {
     hashComparerStub,
     encrypterStub,
     updateAccessTokenRepositoryStub
+  }
+}
+
+function mockAuthenticationParams (): Authentication.Params {
+  return {
+    email: 'any_email@mail.com',
+    password: 'any_password'
   }
 }
 

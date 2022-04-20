@@ -1,5 +1,5 @@
 import { SurveyResultModel } from '@/domain/models'
-import { SaveSurveyResultParams } from '@/domain/usecases'
+import { SaveSurveyResult } from '@/domain/usecases'
 
 export function mockSurveyResultModel (): SurveyResultModel {
   return {
@@ -42,7 +42,7 @@ export function mockEmptySurveyResultModel (): SurveyResultModel {
   }
 }
 
-export function mockSaveSurveyResultParams (): SaveSurveyResultParams {
+export function mockSaveSurveyResultParams (): SaveSurveyResult.Params {
   return {
     surveyId: 'any_survey_id',
     accountId: 'any_account_id',

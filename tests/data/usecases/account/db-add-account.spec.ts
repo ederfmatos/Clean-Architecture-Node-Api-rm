@@ -1,4 +1,4 @@
-import { mockAddAccountParams, mockAccountModel } from '@/tests/domain/mocks'
+import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { Hasher, AddAccountRepository, LoadAccountByEmailRepository } from '@/data/protocols'
 import { DbAddAccount } from '@/data/usecases'
 import { mockAddAccountRepository, mockHasher, mockLoadAccountByEmailRepository } from '@/tests/data/mocks'
@@ -65,6 +65,14 @@ describe('DbAddAccount UseCase', () => {
     await expect(response).rejects.toThrowError(new Error('any message'))
   })
 
+  test('should return false if AddAccountRepository returns false', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockResolvedValueOnce(false)
+
+    const response = await sut.add(mockAddAccountParams())
+    expect(response).toBe(false)
+  })
+
   test('should return true on success', async () => {
     const { sut } = makeSut()
 
@@ -88,7 +96,12 @@ describe('DbAddAccount UseCase', () => {
   test('should return false if LoadAccountByEmailRepository returns an account', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
 
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(mockAccountModel())
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockResolvedValueOnce({
+        id: 'any_id',
+        name: 'any_name',
+        password: 'any_password'
+      })
 
     const isValid = await sut.add(mockAddAccountParams())
     expect(isValid).toBe(false)

@@ -1,7 +1,6 @@
 import { AccessDeniedError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers'
 import { Middleware, HttpResponse } from '@/presentation/protocols'
-import { AccountModel } from '@/domain/models'
 import { LoadAccountByToken } from '@/domain/usecases'
 
 export class AuthMiddleware implements Middleware {
@@ -17,12 +16,12 @@ export class AuthMiddleware implements Middleware {
         return forbidden(new AccessDeniedError())
       }
 
-      const account: AccountModel = await this.loadAccountByToken.loadAccountByToken(accessToken, this.role)
+      const account = await this.loadAccountByToken.loadAccountByToken(accessToken, this.role)
       if (!account) {
         return forbidden(new AccessDeniedError())
       }
 
-      return ok({ account: { id: account.id } })
+      return ok({ account })
     } catch (error) {
       return serverError(error)
     }
