@@ -1,5 +1,5 @@
 import { mockSurveyModel, mockSurveyResultModel } from '@/tests/domain/mocks'
-import { SaveSurveyResult, LoadSurveyById, LoadSurveyResult } from '@/domain/usecases'
+import { SaveSurveyResult, LoadSurveyById, LoadSurveyResult, ExistsSurveyById } from '@/domain/usecases'
 
 export function mockSaveSurveyResult (): SaveSurveyResult {
   class SaveSurveyResultStub implements SaveSurveyResult {
@@ -18,6 +18,16 @@ export function mockLoadSurveyById (): LoadSurveyById {
   }
 
   return new LoadSurveyByIdStub()
+}
+
+export function mockExistsSurveyById (): ExistsSurveyById {
+  class ExistsSurveyByIdStub implements ExistsSurveyById {
+    async existsById (id: string): Promise<ExistsSurveyById.Response> {
+      return true
+    }
+  }
+
+  return new ExistsSurveyByIdStub()
 }
 
 export function mockLoadSurveyResult (): LoadSurveyResult {

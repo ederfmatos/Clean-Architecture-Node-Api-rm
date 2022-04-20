@@ -1,4 +1,4 @@
-import { AddSurveyRepository, LoadSurveyByIdRepository, LoadSurveysRepository } from '@/data/protocols'
+import { AddSurveyRepository, ExistsSurveyByIdRepository, LoadSurveyByIdRepository, LoadSurveysRepository } from '@/data/protocols'
 import { mockSurveyModel, mockSurveysModel } from '@/tests/domain/mocks'
 
 export function mockAddSurveyRepository (): AddSurveyRepository {
@@ -25,4 +25,13 @@ export function mockLoadSurveyByIdRepository (): LoadSurveyByIdRepository {
     }
   }
   return new LoadSurveyByIdRepositoryStub()
+}
+
+export function mockExistsSurveyByIdRepository (): ExistsSurveyByIdRepository {
+  class ExistsSurveyByIdRepositoryStub implements ExistsSurveyByIdRepository {
+    async existsById (id: string): Promise<ExistsSurveyByIdRepository.Response> {
+      return true
+    }
+  }
+  return new ExistsSurveyByIdRepositoryStub()
 }
