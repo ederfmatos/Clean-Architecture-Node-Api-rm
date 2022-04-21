@@ -5,7 +5,7 @@ module.exports = {
   collectCoverage: false,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
-    '!<rootDir>/src/main/config/*'
+    '!<rootDir>/src/main/**'
   ],
   coverageDirectory: 'coverage',
   transform: {
