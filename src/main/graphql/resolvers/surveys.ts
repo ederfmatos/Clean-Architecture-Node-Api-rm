@@ -13,6 +13,6 @@ export default {
     parseLiteral: (ask) => ask.kind === Kind.INT && new Date(ask.value)
   }),
   Query: {
-    surveys: async () => handleApolloServerResolver(loadSurveysController)
+    surveys: async (parent: any, args: any, context: any) => handleApolloServerResolver(loadSurveysController, null, context)
   }
 }
