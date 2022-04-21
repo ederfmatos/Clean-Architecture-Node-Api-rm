@@ -7,7 +7,7 @@ import { configureApolloServer } from './apollo-server'
 
 const app = express()
 
-configureApolloServer(app)
+void configureApolloServer(app)
 configureStaticFiles(app)
 configureSwagger(app)
 configureMiddlewares(app)
