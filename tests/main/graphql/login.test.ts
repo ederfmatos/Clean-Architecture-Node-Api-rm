@@ -46,14 +46,14 @@ describe('Auth Graphql', () => {
       expect(login.name).toBe('any_name')
     })
 
-    test('should return an account on valid credentials is provided', async () => {
-      const { status, body: { data: { login } } } = await request(app)
+    test('should return UnauthorizedError on invalid credentials', async () => {
+      const res = await request(app)
         .post('/graphql')
         .send({ query })
 
-      expect(status).toBe(200)
-      expect(login.accessToken).toBeTruthy()
-      expect(login.name).toBe('any_name')
+      expect(res.status).toBe(401)
+      expect(res.body.data).toBeFalsy()
+      expect(res.body.errors[0].message).toBe('Unauthorized')
     })
   })
 })
