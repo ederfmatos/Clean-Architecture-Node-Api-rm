@@ -4,14 +4,14 @@ import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, ExistsSurveyByIdRepository, LoadAnswersBySurveyRepository {
   async add (addSurveyParams: AddSurveyRepository.Params): Promise<void> {
-    const surveyCollection = await MongoHelper.getCollection('surveys')
+    const surveyCollection = MongoHelper.getCollection('surveys')
 
     return surveyCollection.insertOne(addSurveyParams)
       .then(result => MongoHelper.map(result, addSurveyParams))
   }
 
   async findAll (accountId: string): Promise<LoadSurveysRepository.Response[]> {
-    const surveyCollection = await MongoHelper.getCollection<LoadSurveysRepository.Response>('surveys')
+    const surveyCollection = MongoHelper.getCollection<LoadSurveysRepository.Response>('surveys')
 
     const query = new QueryBuilder()
       .lookup({
@@ -45,14 +45,14 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
   }
 
   async loadById (id: string): Promise<LoadSurveyByIdRepository.Response> {
-    const surveyCollection = await MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
+    const surveyCollection = MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
 
     const survey = await surveyCollection.findOne({ _id: new ObjectId(id) })
     return MongoHelper.mapResult(survey)
   }
 
   async loadAnswers (id: string): Promise<LoadAnswersBySurveyRepository.Response> {
-    const surveyCollection = await MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
+    const surveyCollection = MongoHelper.getCollection<LoadSurveyByIdRepository.Response>('surveys')
 
     const query = new QueryBuilder()
       .match({ _id: new ObjectId(id) })
@@ -64,7 +64,7 @@ export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRe
   }
 
   async existsById (id: string): Promise<ExistsSurveyByIdRepository.Response> {
-    const surveyCollection = await MongoHelper.getCollection('surveys')
+    const surveyCollection = MongoHelper.getCollection('surveys')
 
     const survey = await surveyCollection.findOne(
       { _id: new ObjectId(id) },

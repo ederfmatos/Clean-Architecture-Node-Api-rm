@@ -37,11 +37,13 @@ describe('Survey Route', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('surveys')
-    await surveyCollection.deleteMany({})
+    surveyCollection = MongoHelper.getCollection('surveys')
+    accountCollection = MongoHelper.getCollection('accounts')
 
-    accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.deleteMany({})
+    await Promise.all([
+      surveyCollection.deleteMany({}),
+      accountCollection.deleteMany({})
+    ])
   })
 
   describe('POST /surveys', () => {

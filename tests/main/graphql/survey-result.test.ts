@@ -32,13 +32,8 @@ describe('SurveyResult GraphQL', () => {
   })
 
   beforeEach(async () => {
-    const accounts = await Promise.all([
-      MongoHelper.getCollection('surveys'),
-      MongoHelper.getCollection('accounts')
-    ])
-
-    surveyCollection = accounts[0]
-    accountCollection = accounts[1]
+    surveyCollection = MongoHelper.getCollection('surveys')
+    accountCollection = MongoHelper.getCollection('accounts')
 
     await Promise.all([
       surveyCollection.deleteMany({}),

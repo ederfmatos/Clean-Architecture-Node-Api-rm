@@ -27,9 +27,7 @@ export class QueryBuilder {
   }
 
   sort (data: object): QueryBuilder {
-    this.query.push({
-      $sort: data
-    })
+    this.query.push({ $sort: data })
     return this
   }
 
